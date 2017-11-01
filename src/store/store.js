@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueResource from 'vue-resource'
 
+Vue.use(VueResource)
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
@@ -13,11 +15,26 @@ export const store = new Vuex.Store({
       {id: 5, detali: '555555'},
       {id: 6, detali: '666666'}
     ],
-    requests: []
+    requests: [],
+    testlist: []
   },
+
   mutations: {
-    increment (state) {
-      state.requests++
+
+    setTestlist (state, testlist) {
+      state.testlist = testlist
     }
+
   }
+
+  // actions: {
+  //   getTestlist ({ commit }) {
+  //     Vue.http.get('http://jsonplaceholder.typicode.com/posts')
+  //       .then(response => {
+  //         console.log(response.data)
+  //         commit('setTestlist', response.data)
+  //       })
+  //   }
+  // }
+
 })
