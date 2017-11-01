@@ -27,14 +27,4 @@ export const store = new Vuex.Store({
 
   }
 
-  // actions: {
-  //   getTestlist ({ commit }) {
-  //     Vue.http.get('http://jsonplaceholder.typicode.com/posts')
-  //       .then(response => {
-  //         console.log(response.data)
-  //         commit('setTestlist', response.data)
-  //       })
-  //   }
-  // }
-
 })

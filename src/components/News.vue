@@ -93,6 +93,7 @@
 
 import NewsList from './NewsList.vue'
 import {
+
   QLayout,
   QToolbar,
   QToolbarTitle,
