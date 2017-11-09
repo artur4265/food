@@ -34,20 +34,8 @@
 
 
     <div class="layout-padding docs-input row justify-center">
-      <h4>Добавьте название продуктов</h4>
-
-      <q-list>
-        <q-item multiline>
-          <q-item-side icon="edit" />
-          <q-item-main>
-            <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
-          </q-item-main>
-        </q-item>
-      </q-list>
-
 
       <p class="caption">Выберите категорию рецептов</p>
-      <br>
 
       <q-dialog-select
         stack-label="Delimited options"
@@ -58,14 +46,18 @@
         :options="optionsCat"
       />
 
+    <p class="caption">Добавьте название продуктов</p>
+
+      <q-list>
+        <q-item multiline>
+          <q-item-side icon="edit" />
+          <q-item-main>
+            <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
+          </q-item-main>
+        </q-item>
+      </q-list>
+
       <q-btn  class="full-width" loader color="secondary" @click="simulateProgress" >Начать поиск</q-btn>
-
-      <q-modal ref="minimizedModal" minimized :content-css="{padding: '50px'}">
-        <h4>Minimized Modal</h4>
-        <p>This one has backdrop on small screens too.</p>
-        <q-btn color="red" @click="$refs.minimizedModal.close()">Close Me</q-btn>
-      </q-modal>
-
 
 
       <news-list></news-list>
@@ -93,7 +85,6 @@
 
 import NewsList from './NewsList.vue'
 import {
-
   QLayout,
   QToolbar,
   QToolbarTitle,
