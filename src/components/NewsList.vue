@@ -22,9 +22,9 @@
 
 
       <q-modal ref="maximizedModal" maximized :content-css="{padding: '50px'}">
-        <h4>Minimized Modal</h4>
-        <p>This one has backdrop on small screens too.</p>
-        <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn>
+         <!-- <h4>Minimized Modal-- {{ detalRecipe[0].title.rendered }} </h4>
+        <p>This one has backdrop on small screens too.</p> -->
+        <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn> 
       </q-modal>
 
 
@@ -91,7 +91,8 @@ export default {
     return {
 
       modalLabel: 'Always Maximized',
-      modalRef: 'maximizedModal'
+      modalRef: 'maximizedModal',
+      detalRecipe: []
 
     }
   },
@@ -103,6 +104,10 @@ export default {
 
     requests () {
       return this.$store.state.requests
+    },
+
+    getDetaliRecipe: function (id) {
+      console.log(this.$store.getters.getRecipeById(0))
     }
 
   },
@@ -112,18 +117,21 @@ export default {
   },
 
   methods: {
-    getRecipeslist () {
-      this.$http.get(this.$store.state.requests).then(response => {
-        this.$store.commit('setRecipeslist', response.data)
-        return this.$store.state.recipes
-      })
-    },
 
-    getDetaliRecipe: function (id) {
-      console.log(id)
+    getRecipeslist () {
+      this.$store.watch((state) => state.requests, () => {
+        console.log(this.$store.state.requests + 'new')
+        if (this.$store.state.requests !== '') {
+          this.$http.get(this.$store.state.requests).then(response => {
+            this.$store.commit('setRecipeslist', response.data)
+            return this.$store.state.recipes
+          })
+        }
+      })
     }
 
   }
+
 }
 </script>
 

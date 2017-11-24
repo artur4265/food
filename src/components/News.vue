@@ -44,6 +44,9 @@
         separator
         v-model="selectCat"
         :options="optionsCat"
+        ok-label="Ок"
+        cancel-label="Отмена"
+        title="Блюда"
       />
 
     <p class="caption">Добавьте название продуктов</p>
@@ -145,36 +148,18 @@ export default {
       searchFoods: [],
       piceFood: null,
       foodChips: [],
-      selectCat: 'Все',
+      selectCat: '',
       progress: true,
       open: false,
-      optionsCat: [
-        {
-          label: 'Все категории',
-          value: 'Все'
-        },
-        {
-          label: 'Супы',
-          value: 'супы'
-        },
-        {
-          label: 'Десерт',
-          value: 'десерт'
-        },
-        {
-          label: 'Завтрак',
-          value: 'завтрак'
-        },
-        {
-          label: 'Салат',
-          value: 'салат'
-        }
-      ]
-
+      optionsCat: []
     }
   },
-  methods: {
 
+  created: function () {
+    this.getCategorieslist()
+  },
+
+  methods: {
     send () {
       console.log(this.foodChips)
     },
@@ -182,7 +167,30 @@ export default {
     simulateProgress (e, done) {
       // simulate a delay
       console.log(this.foodChips)
+      this.createRequest()
       setTimeout(done, 1000)
+    },
+
+    getCategorieslist () {
+      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+        var catFiltered = response.data.map(function (catIdName) {
+          return {
+            label: catIdName.name,
+            value: `${catIdName.id}`
+          }
+        })
+        this.$store.commit('setCategorieslist', catFiltered)
+        this.optionsCat = this.$store.state.categories
+        this.selectCat = '1'
+      })
+    },
+
+    createRequest () {
+      console.log(this.$store.state.requests)
+      var req = 'http://mob.4bstudio.com.ua/wp-json/wp/v2/posts/'
+      var catPart = '?categories=' + this.selectCat
+      this.$store.commit('setRequest', req + catPart)
+      console.log(this.$store.state.requests + '?categories=' + this.selectCat)
     }
 
   },

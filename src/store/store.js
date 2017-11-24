@@ -7,15 +7,36 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    requests: 'http://mob.4bstudio.com.ua/wp-json/wp/v2/posts/',
-    recipes: []
+    requests: '',
+    recipes: [],
+    categories: []
   },
 
   mutations: {
 
     setRecipeslist (state, recipes) {
       state.recipes = recipes
+    },
+
+    setCategorieslist (state, categories) {
+      state.categories = categories
+    },
+
+    setRequest (state, requests) {
+      state.requests = requests
     }
+
+  },
+
+  getters: {
+    // ...
+    getRecipeById: (state, getters) => (id) => {
+      return state.recipes.find(recipe => recipe.id === id)
+    }
+
+    // getCategiriesById: (state, getters) => (id) => {
+    //   return state.categories.find(categories => categories.id === id)
+    // }
 
   }
 
