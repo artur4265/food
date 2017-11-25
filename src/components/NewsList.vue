@@ -16,17 +16,32 @@
         </q-card-title>
         <q-card-main v-html="recipe.content.rendered"></q-card-main>
         <q-card-actions>
-          <q-btn flat v-ripple.mat @click="$refs.maximizedModal.open(); getDetaliRecipe(recipe.id);">Read more</q-btn>
+          <q-btn flat @click="$refs.maximizedModal.open(); getDetaliRecipe(recipe.id);">Read more</q-btn>
         </q-card-actions>
       </q-card>
 
 
-      <q-modal ref="maximizedModal" maximized :content-css="{padding: '50px'}">
-         <!-- <h4>Minimized Modal-- {{ detalRecipe[0].title.rendered }} </h4>
-        <p>This one has backdrop on small screens too.</p> -->
-        <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn> 
+      <q-modal ref="maximizedModal" maximized :content-css="{padding: '5px'}">
+        <q-card>
+          <q-card-media v-if="detaliImg !== false">
+            <img v-bind:src="detaliImg">
+          </q-card-media>
+          <q-card-media v-else>
+            <img src="../assets/nia.jpg">
+          </q-card-media>
+          <q-card-title>
+            {{ detaliTitle }}
+            <span slot="subtitle">Subtitle</span>
+          </q-card-title>
+          <q-card-main v-html="detaliText"></q-card-main>
+          <q-card-separator />
+          <div class="quote">Состав:</div>
+          <q-card-main v-html="detaliSostav"></q-card-main>
+          <q-card-actions>
+            <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn>
+          </q-card-actions>
+        </q-card>        
       </q-modal>
-
 
   </div>
 
@@ -54,8 +69,7 @@ import {
   QPopover,
   QVideo,
   QModal,
-  QModalLayout,
-  Ripple
+  QModalLayout
 } from 'quasar'
 
 export default {
@@ -83,16 +97,18 @@ export default {
     QModalLayout
   },
 
-  directives: {
-    Ripple
-  },
-
   data () {
     return {
 
       modalLabel: 'Always Maximized',
       modalRef: 'maximizedModal',
-      detalRecipe: []
+      detalRecipe: [],
+      detaliId: null,
+      detaliTitle: null,
+      detaliText: null,
+      detaliSostav: null,
+      detaliImg: null,
+      detaliRecipe: null
 
     }
   },
@@ -104,11 +120,11 @@ export default {
 
     requests () {
       return this.$store.state.requests
-    },
-
-    getDetaliRecipe: function (id) {
-      console.log(this.$store.getters.getRecipeById(0))
     }
+
+    // getDetaliRecipe: function (id) {
+    //   console.log(this.$store.getters.getRecipeById(0))
+    // }
 
   },
 
@@ -128,6 +144,21 @@ export default {
           })
         }
       })
+    },
+
+    getDetaliRecipe: function (id) {
+      console.log(id)
+      var filterRecipe = this.$store.state.recipes
+
+      function checkId (recipe) {
+        return recipe.id === id
+      }
+
+      this.detaliRecipe = Object.values(filterRecipe.filter(checkId))
+      this.detaliTitle = this.detaliRecipe[0].title.rendered
+      this.detaliText = this.detaliRecipe[0].content.rendered
+      this.detaliSostav = this.detaliRecipe[0].metadata.sostav[0]
+      this.detaliImg = this.detaliRecipe[0].metadata.link_to_another_source[0]
     }
 
   }
