@@ -38,7 +38,7 @@
       <p class="caption">Выберите категорию рецептов</p>
 
       <q-dialog-select
-        stack-label="Delimited options"
+        stack-label="блюда"
         inverted
         color="amber"
         separator
@@ -189,8 +189,14 @@ export default {
       console.log(this.$store.state.requests)
       var req = 'http://mob.4bstudio.com.ua/wp-json/wp/v2/posts/'
       var catPart = '?categories=' + this.selectCat
-      this.$store.commit('setRequest', req + catPart)
-      console.log(this.$store.state.requests + '?categories=' + this.selectCat)
+      var enteredProducts
+      if (this.foodChips.length < 1) {
+        enteredProducts = ''
+      } else {
+        enteredProducts = '&filter[s]=' + this.foodChips
+      }
+      this.$store.commit('setRequest', req + catPart + enteredProducts)
+      // console.log(this.$store.state.requests + this.selectCat + enteredProducts)
     }
 
   },

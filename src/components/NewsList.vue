@@ -43,7 +43,7 @@
           <q-card-actions>
             <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn>
           </q-card-actions>
-        </q-card>        
+        </q-card>
       </q-modal>
 
   </div>
@@ -140,7 +140,7 @@ export default {
 
     getRecipeslist () {
       this.$store.watch((state) => state.requests, () => {
-        console.log(this.$store.state.requests + 'new')
+        // console.log(this.$store.state.requests + 'new')
         if (this.$store.state.requests !== '') {
           this.notFoundRecipes = ''
           this.$http.get(this.$store.state.requests).then(response => {
