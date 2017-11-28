@@ -25,7 +25,7 @@
         <q-list-header>Essential Links</q-list-header>
 
         <q-item>
-          <q-side-link to="/" icon="rss feed" label="Twitter">Go to Home</q-side-link>
+          <q-side-link to="/" icon="rss feed" label="">Go to Home</q-side-link>
         </q-item>
 
       </q-list>

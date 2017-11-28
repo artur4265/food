@@ -21,6 +21,9 @@
       </q-card>
 
 
+  <p>{{ notFoundRecipes }}</p>
+
+
       <q-modal ref="maximizedModal" maximized :content-css="{padding: '5px'}">
         <q-card>
           <q-card-media v-if="detaliImg !== false">
@@ -103,6 +106,7 @@ export default {
       modalLabel: 'Always Maximized',
       modalRef: 'maximizedModal',
       detalRecipe: [],
+      notFoundRecipes: '111',
       detaliId: null,
       detaliTitle: null,
       detaliText: null,
@@ -138,10 +142,13 @@ export default {
       this.$store.watch((state) => state.requests, () => {
         // console.log(this.$store.state.requests + 'new')
         if (this.$store.state.requests !== '') {
+          this.notFoundRecipes = ''
           this.$http.get(this.$store.state.requests).then(response => {
             this.$store.commit('setRecipeslist', response.data)
             return this.$store.state.recipes
           })
+        } else {
+          this.notFoundRecipes = 'По Вашему запросу ничего не найдено.'
         }
       })
     },
