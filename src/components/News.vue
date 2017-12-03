@@ -196,6 +196,7 @@ export default {
       else {
         enteredProducts = '&filter[s]=' + this.foodChips
       }
+
       this.$store.commit('setRequest', req + catPart + enteredProducts)
       // console.log(this.$store.state.requests + this.selectCat + enteredProducts)
     }
