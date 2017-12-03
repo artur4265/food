@@ -192,7 +192,8 @@ export default {
       var enteredProducts
       if (this.foodChips.length < 1) {
         enteredProducts = ''
-      } else {
+      }
+      else {
         enteredProducts = '&filter[s]=' + this.foodChips
       }
       this.$store.commit('setRequest', req + catPart + enteredProducts)
