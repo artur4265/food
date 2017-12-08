@@ -31,15 +31,36 @@
           </q-card-media>
           <q-card-title>
             {{ detaliTitle }}
-            <span slot="subtitle">Subtitle</span>
+            <span icon="shopping_cart" slot="subtitle"> <q-icon name="alarm" /> Время приготовления - {{ detaliTimeCook }}</span>
           </q-card-title>
-          <q-card-main v-html="detaliText"></q-card-main>
           <q-card-separator />
-          <div class="quote">Состав:</div>
-          <q-card-main v-html="detaliSostav"></q-card-main>
+
+      <q-list>
+        <q-collapsible group="somegroup" icon="receipt" label="Рецепт" opened>
+          <div>
+            <q-card-main v-html="detaliText"></q-card-main>
+          </div>
+        </q-collapsible>
+        <q-collapsible group="somegroup" icon="view_list" label="Состав">
+          <div>
+            <q-card-main class="quote" v-html="detaliSostav"></q-card-main>
+          </div>
+        </q-collapsible>
+        <q-collapsible group="somegroup" icon="donut_large" label="Энергетическая ценность">
+          <div>
+            <p class="quote">На 100гр блюда:</p>
+            <p>Калории - <span class="token">{{ detaliKall }} kkal</span></p>
+            <p>Белки - <span class="token">{{ detaliBelki }}</span></p>
+            <p>Жиры - <span class="token">{{ detaliJiri }}</span></p>
+            <p>Углеводы - <span class="token">{{ detaliUglevodi }}</span></p>
+          </div>
+        </q-collapsible>
+      </q-list>
+
           <q-card-actions>
-            <q-btn color="red" @click="$refs.maximizedModal.close()">Close Me</q-btn>
+            <q-btn color="red" @click="$refs.maximizedModal.close()">Назад</q-btn>
           </q-card-actions>
+
         </q-card>
       </q-modal>
 
@@ -108,7 +129,12 @@ export default {
       detaliText: null,
       detaliSostav: null,
       detaliImg: null,
-      detaliRecipe: null
+      detaliRecipe: null,
+      detaliTimeCook: null,
+      detaliKall: null,
+      detaliBelki: null,
+      detaliJiri: null,
+      detaliUglevodi: null
 
     }
   },
@@ -160,6 +186,11 @@ export default {
       this.detaliText = this.detaliRecipe[0].content.rendered
       this.detaliSostav = this.detaliRecipe[0].metadata.sostav[0]
       this.detaliImg = this.detaliRecipe[0].metadata.link_to_another_source[0]
+      this.detaliTimeCook = this.detaliRecipe[0].metadata.time_to_cook[0]
+      this.detaliKall = this.detaliRecipe[0].metadata.kkal[0]
+      this.detaliBelki = this.detaliRecipe[0].metadata.belki[0]
+      this.detaliJiri = this.detaliRecipe[0].metadata.jiri[0]
+      this.detaliUglevodi = this.detaliRecipe[0].metadata.uglevodi[0]
     }
 
   }

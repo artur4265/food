@@ -14,8 +14,8 @@
       </q-btn>
 
       <q-toolbar-title>
-        Quasar App food
-        <div slot="subtitle">Running on Quasar v{{$q.version}}</div>
+        Wath to Cook
+        <div slot="subtitle">v{{$q.version}}</div>
       </q-toolbar-title>
     </q-toolbar>
 
@@ -35,33 +35,66 @@
 
     <div class="layout-padding docs-input row justify-center">
 
-      <p class="caption">Выберите категорию рецептов</p>
+      <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
+              <q-step default name="campaign" title="Категория блюд">
+                <p>Выберите категорию рецептов</p>
 
-      <q-dialog-select
-        stack-label="блюда"
-        inverted
-        color="amber"
-        separator
-        v-model="selectCat"
-        :options="optionsCat"
-        ok-label="Ок"
-        cancel-label="Отмена"
-        title="Блюда"
-      />
+                <q-dialog-select
+                        stack-label="блюда"
+                        inverted
+                        color="amber"
+                        separator
+                        v-model="selectCat"
+                        :options="optionsCat"
+                        ok-label="Ок"
+                        cancel-label="Отмена"
+                        title="Блюда"
+                      />
 
-    <p class="caption">Добавьте название продуктов</p>
+                <q-stepper-navigation v-if="!globalNavigation">
+                  <q-btn color="primary" @click="$refs.stepper.next()">Продолжить</q-btn>
+                </q-stepper-navigation>
+              </q-step>
 
-      <q-list>
-        <q-item multiline>
-          <q-item-side icon="edit" />
-          <q-item-main>
-            <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
-          </q-item-main>
-        </q-item>
-      </q-list>
 
-      <q-btn  class="full-width" loader color="secondary" @click="simulateProgress" >Начать поиск</q-btn>
+              <q-step name="create_ad" title="Ингридиенты">
 
+                <p class="caption">Добавьте название продуктов</p>
+
+                <q-list>
+                  <q-item multiline>
+                    <q-item-side icon="edit" />
+                    <q-item-main>
+                      <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
+                    </q-item-main>
+                  </q-item>
+                </q-list>
+
+
+                <q-stepper-navigation v-if="!globalNavigation">
+                  <!--<q-btn color="primary" @click="$refs.stepper.goToStep('campaign')">Restart</q-btn>-->
+                  <q-btn color="primary" flat @click="$refs.stepper.previous()">Назад</q-btn>
+                  <q-btn  class="full-width" loader color="primary" @click="simulateProgress" :disable="!progress">Начать поиск</q-btn>
+                </q-stepper-navigation>
+              </q-step>
+
+              <q-stepper-navigation v-if="globalNavigation">
+                <q-btn
+                  v-if="step !== 'campaign'"
+                  color="primary"
+                  flat
+                  @click="$refs.stepper.previous()"
+                >
+                  Back
+                </q-btn>
+
+                <q-btn color="primary" @click="$refs.stepper.next()">
+                  {{ step === 'create_ad' ? 'Finalize' : 'Next' }}
+                </q-btn>
+              </q-stepper-navigation>
+
+              <q-inner-loading />
+            </q-stepper>
 
       <news-list></news-list>
 
@@ -109,7 +142,11 @@ import {
   BackToTop,
   QFixedPosition,
   QModal,
-  QModalLayout
+  QModalLayout,
+  QStepper,
+  QStep,
+  QStepperNavigation,
+  QInnerLoading
 } from 'quasar'
 
 export default {
@@ -136,6 +173,10 @@ export default {
     QFixedPosition,
     QModal,
     QModalLayout,
+    QStepper,
+    QStep,
+    QStepperNavigation,
+    QInnerLoading,
     'news-list': NewsList
   },
 
@@ -145,18 +186,32 @@ export default {
 
   data () {
     return {
+      step: 'first',
+      step2: 'first',
       searchFoods: [],
       piceFood: null,
       foodChips: [],
       selectCat: '',
-      progress: true,
+      progress: false,
       open: false,
-      optionsCat: []
+      optionsCat: [],
+      options: ['contractable', 'disable_payment', 'step_error']
     }
   },
 
   created: function () {
     this.getCategorieslist()
+  },
+
+  computed: {
+    alt () {
+      return this.options.includes('alt')
+    },
+
+    globalNavigation () {
+      return this.options.includes('global_navigation')
+    }
+
   },
 
   methods: {
@@ -205,10 +260,11 @@ export default {
 
   watch: {
     foodChips: function (params) {
-      if (this.foodChips.length >= 3) {
+      if (this.foodChips.length >= 1) {
+        this.progress = true
+      }
+      else {
         this.progress = false
-        console.log(this.foodChips.length)
-        console.log(this.foodChips)
       }
     }
   }

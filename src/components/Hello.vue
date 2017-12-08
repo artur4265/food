@@ -43,11 +43,12 @@
       if using subRoutes
     -->
 <router-view />
-    <!-- <div class="layout-padding logo-container non-selectable no-pointer-events">
-      <div class="logo" :style="position">
-        <img src="~assets/quasar-logo-full.svg">
-      </div>
-    </div> -->
+    <div class="layout-padding logo-container non-selectable no-pointer-events">
+      <!-- <div class="logo">
+        <img src="~assets/home.png">
+        <q-side-link to="/news" icon="rss feed" label="Twitter">Начать поиск рецептов</q-side-link>
+      </div> -->
+    </div>
   </q-layout>
 </template>
 
