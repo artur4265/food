@@ -19,18 +19,21 @@
     </q-toolbar>
 
     <div slot="left">
-      <!--
-        Use <q-side-link> component
-        instead of <q-item> for
-        internal vue-router navigation
-      -->
 
       <q-list no-border link inset-delimiter>
         <q-list-header>Essential Links</q-list-header>
 
-        <q-item>
-          <q-side-link to="/news" icon="rss feed" label="Twitter">Go to News</q-side-link>
-        </q-item>
+          <q-side-link item to="/" exact>
+            <q-item-main label="Home" />
+          </q-side-link>
+
+          <q-side-link item to="/news">
+            <q-item-main label="Поиск рецептов"/>
+          </q-side-link>
+
+          <q-side-link item to="/shopping-list">
+            <q-item-main label="Список покупок" />
+          </q-side-link>
 
 
       </q-list>

@@ -59,6 +59,26 @@
 
           <q-card-actions>
             <q-btn color="red" @click="$refs.maximizedModal.close()">Назад</q-btn>
+
+                <q-icon class="right" slot="right" name="more_vert">
+                  <q-popover ref="popover">
+                    <q-list link class="no-border">
+                      <q-item @click="$refs.popover.close()">
+                        <q-item-main label="Добавить в избранное" />
+                      </q-item>
+                      <q-item @click="$refs.popover.close()">
+                        <q-item-main label="Сохранить в список покупок" />
+                      </q-item>
+                      <q-item @click="$refs.popover.close()">
+                        <q-item-main label="Поделиться в соц. сетях" />
+                      </q-item>
+                    </q-list>
+                  </q-popover>
+                </q-icon>
+
+
+
+
           </q-card-actions>
 
         </q-card>

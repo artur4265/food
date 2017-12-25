@@ -24,9 +24,18 @@
       <q-list no-border link inset-delimiter>
         <q-list-header>Essential Links</q-list-header>
 
-        <q-item>
-          <q-side-link to="/" icon="rss feed" label="">Go to Home</q-side-link>
-        </q-item>
+          <q-side-link item to="/" exact>
+            <q-item-main label="Home" />
+          </q-side-link>
+
+          <q-side-link item to="/news">
+            <q-item-main label="Поиск рецептов"/>
+          </q-side-link>
+
+          <q-side-link item to="/shopping-list">
+            <q-item-main label="Список покупок" />
+          </q-side-link>
+
 
       </q-list>
     </div>
