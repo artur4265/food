@@ -49,18 +49,17 @@
       <div style="width: 500px; max-width: 90vw;">
         <q-input v-model="nameShoppingList" placeholder="Название списка продуктов" />
         <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
-        <q-btn class="bt-mt" color="primary" icon="shopping_cart">Сохранить список продуктов</q-btn>
+        <q-btn class="bt-mt" color="primary" icon="shopping_cart" @click="addTodo()">Сохранить список продуктов</q-btn>
       </div>
     </div>
 
     <div class="layout-padding card-examples row items-start">
-        <q-card style="width: 100%;" inline>
+        <q-card style="width: 100%;" inline v-for="shopItemList in todos" v-bind:key="shopItemList.name">
           <q-card-title>
-            Title
+            {{shopItemList.name}}
           </q-card-title>
           <q-card-main>
-            <q-chip tag square color="primary">баклажан</q-chip>
-            <q-chip tag square color="primary">томат</q-chip>
+            <q-chip tag square color="primary" v-for="food in shopItemList.products" v-bind:key="food.products">{{food}}</q-chip>
           </q-card-main>
           <q-card-separator />
             <q-card-actions>
@@ -92,8 +91,7 @@
 </template>
 
 <script>
-
-import NewsList from './NewsList.vue'
+import { todoStorage } from '../store/localstore'
 import {
   QCard,
   QCardTitle,
@@ -162,8 +160,7 @@ export default {
     QStepper,
     QStep,
     QStepperNavigation,
-    QInnerLoading,
-    'news-list': NewsList
+    QInnerLoading
   },
 
   directives: {
@@ -173,16 +170,10 @@ export default {
   data () {
     return {
       nameShoppingList: '',
-      step: 'first',
-      step2: 'first',
-      searchFoods: [],
-      piceFood: null,
       foodChips: [],
-      selectCat: '',
-      progress: false,
-      open: false,
-      optionsCat: [],
-      options: ['contractable', 'disable_payment', 'step_error']
+      shopList: [],
+      test: [],
+      todos: todoStorage.fetch()
     }
   },
 
@@ -197,17 +188,39 @@ export default {
   methods: {
     send () {
       console.log(this.foodChips)
+    },
+
+    saveShopList () {
+
+      // this.shopList.push(shopListItem)
+      // LocalStorage.set('test', shopListItem)
+      // this.nameShoppingList = ''
+      // this.foodChips = []
+      // this.shopList += LocalStorage.get.item('test')
+      // console.log(shopListItem)
+    },
+
+    // loadShopList () {
+    //   this.shopList = LocalStorage.get.item(this.shopList)
+    // }
+
+    addTodo: function () {
+      if (this.nameShoppingList) {
+        this.todos.push({
+          name: this.nameShoppingList,
+          products: this.foodChips
+        })
+      }
+      this.nameShoppingList = ''
+      this.foodChips = []
     }
 
   },
 
   watch: {
-    foodChips: function (params) {
-      if (this.foodChips.length >= 1) {
-        this.progress = true
-      }
-      else {
-        this.progress = false
+    todos: {
+      handler: function (todos) {
+        todoStorage.save(todos)
       }
     }
   }
