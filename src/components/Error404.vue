@@ -6,7 +6,11 @@
     <div>
       <div class="error-card shadow-4 bg-white column items-center justify-center no-wrap">
         <q-icon name="error_outline" color="grey-5" />
+<<<<<<< HEAD
         <p class="caption text-center">Oops. Nothing here... </p>
+=======
+        <p class="caption text-center">Oops. Nothing here... go home</p>
+>>>>>>> 289cf1ecf2cc503821c94f797f2f02d1bfc2ca49
         <p class="text-center group">
           <q-btn
             v-if="canGoBack"
