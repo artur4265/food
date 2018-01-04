@@ -44,30 +44,30 @@
 
     <div class="layout-padding docs-input row justify-center">
 
-      <p>Добавьте свой список покупок</p>
+      <p>Добавьте свой список покупок <q-icon name="shopping_cart" /></p>
 
       <div style="width: 500px; max-width: 90vw;">
         <q-input v-model="nameShoppingList" placeholder="Название списка продуктов" />
         <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
-        <q-btn class="bt-mt" color="primary" icon="shopping_cart" @click="addTodo()">Сохранить список продуктов</q-btn>
+        <q-btn class="bt-mt full-width" color="primary" icon="add_shopping_cart" @click="addTodo()">Сохранить список продуктов</q-btn>
       </div>
     </div>
 
     <div class="layout-padding card-examples row items-start">
-        <q-card style="width: 100%;" inline v-for="shopItemList in todos" v-bind:key="shopItemList.name">
+        <q-card style="width: 100%;" inline v-for="(shopItemList, index) in todos" v-bind:key="index">
           <q-card-title>
             {{shopItemList.name}}
           </q-card-title>
+          <q-card-separator />
           <q-card-main>
-            <q-chip tag square color="primary" v-for="food in shopItemList.products" v-bind:key="food.products">{{food}}</q-chip>
+            <q-chip class="foodchip" tag square color="primary" v-for="(food, ifood) in shopItemList.products" v-bind:key="ifood">{{food}}</q-chip>
           </q-card-main>
           <q-card-separator />
             <q-card-actions>
-              <q-btn flat>Удалить список</q-btn>
+              <q-btn flat v-on:click="deleteTodo(index)"><q-icon name="remove_shopping_cart" /> Удалить список</q-btn>
             </q-card-actions>
         </q-card>
     </div>
-
 
       <q-fixed-position corner="bottom-right" :offset="[18, 18]">
         <q-btn
@@ -190,20 +190,6 @@ export default {
       console.log(this.foodChips)
     },
 
-    saveShopList () {
-
-      // this.shopList.push(shopListItem)
-      // LocalStorage.set('test', shopListItem)
-      // this.nameShoppingList = ''
-      // this.foodChips = []
-      // this.shopList += LocalStorage.get.item('test')
-      // console.log(shopListItem)
-    },
-
-    // loadShopList () {
-    //   this.shopList = LocalStorage.get.item(this.shopList)
-    // }
-
     addTodo: function () {
       if (this.nameShoppingList) {
         this.todos.push({
@@ -213,6 +199,10 @@ export default {
       }
       this.nameShoppingList = ''
       this.foodChips = []
+    },
+
+    deleteTodo: function (index) {
+      this.todos.splice(index, 1)
     }
 
   },
@@ -231,5 +221,10 @@ export default {
 <style>
 .bt-mt {
   margin-top: 10px;
+}
+
+.foodchip {
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 </style>

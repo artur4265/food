@@ -16,23 +16,49 @@
         </q-card-title>
         <!--<q-card-main v-html="recipe.content.rendered"></q-card-main>-->
         <q-card-actions>
-          <q-btn flat @click="$refs.maximizedModal.open(); getDetaliRecipe(recipe.id);">Read more</q-btn>
+          <q-btn outline color="primary" @click="$refs.maximizedModal.open(); getDetaliRecipe(recipe.id);">смотреть</q-btn>
         </q-card-actions>
       </q-card>
 
 
       <q-modal ref="maximizedModal" maximized :content-css="{padding: '5px'}">
         <q-card>
+        
+          <q-card-actions>
+            <div class="left">
+              <q-btn color="primary" class="bt-30px"  @click="$refs.maximizedModal.close()" small><q-icon name="reply"/></q-btn>
+            </div>
+            <div class="right">
+              <q-btn class="fl_right bt-30px" slot="right" icon="more_vert" name="more_vert" small>
+                  <q-popover ref="popover">
+                    <q-list link class="no-border">
+                      <q-item @click="$refs.popover.close()">
+                        <q-item-main label="Добавить в избранное" />
+                      </q-item>
+                      <q-item @click="$refs.popover.close(); addList(); toastWithType('positive');">
+                        <q-item-main label="Сохранить в список покупок" />
+                      </q-item>
+                      <q-item @click="$refs.minimizedModal.open(); $refs.popover.close();">
+                        <q-item-main label="Поделиться в соц. сетях" />
+                      </q-item>
+                    </q-list>
+                  </q-popover>
+              </q-btn>
+            </div>
+          </q-card-actions>
+
           <q-card-media v-if="detaliImg !== false">
             <img v-bind:src="detaliImg">
           </q-card-media>
           <q-card-media v-else>
             <img src="../assets/nia.jpg">
           </q-card-media>
+
           <q-card-title>
             {{ detaliTitle }}
             <span icon="shopping_cart" slot="subtitle"> <q-icon name="alarm" /> Время приготовления - {{ detaliTimeCook }}</span>
           </q-card-title>
+
           <q-card-separator />
 
       <q-list>
@@ -58,30 +84,33 @@
       </q-list>
 
           <q-card-actions>
-            <q-btn color="red" @click="$refs.maximizedModal.close()">Назад</q-btn>
-
-                <q-icon class="right" slot="right" name="more_vert">
-                  <q-popover ref="popover">
-                    <q-list link class="no-border">
-                      <q-item @click="$refs.popover.close()">
-                        <q-item-main label="Добавить в избранное" />
-                      </q-item>
-                      <q-item @click="$refs.popover.close()">
-                        <q-item-main label="Сохранить в список покупок" />
-                      </q-item>
-                      <q-item @click="$refs.popover.close()">
-                        <q-item-main label="Поделиться в соц. сетях" />
-                      </q-item>
-                    </q-list>
-                  </q-popover>
-                </q-icon>
-
-
-
-
+            <!-- <q-btn color="red" @click="$refs.maximizedModal.close()">Назад</q-btn> -->
           </q-card-actions>
-
         </q-card>
+
+
+
+    <q-modal ref="minimizedModal" minimized :content-css="{padding: '50px'}">
+        <social-sharing url="https://vuejs.org/" inline-template>
+          <div class="network_flex">
+            <network network="facebook">
+              <i class="fa fa-fw fa-facebook"></i> Facebook
+            </network>
+            <network network="googleplus">
+              <i class="fa fa-fw fa-google-plus"></i> Google +
+            </network>
+            <network network="twitter">
+              <i class="fa fa-fw fa-twitter"></i> Twitter
+            </network>
+            <network network="vk">
+              <i class="fa fa-vk"></i> VKontakte
+            </network>
+          </div>
+        </social-sharing>
+      <q-btn color="red" @click="$refs.minimizedModal.close()" small>Отмена</q-btn>
+    </q-modal>
+
+
       </q-modal>
 
   </div>
@@ -90,6 +119,7 @@
 </template>
 
 <script>
+import { todoStorage } from '../store/localstore'
 import {
   QCard,
   QCardTitle,
@@ -110,7 +140,8 @@ import {
   QPopover,
   QVideo,
   QModal,
-  QModalLayout
+  QModalLayout,
+  Toast
 } from 'quasar'
 
 export default {
@@ -135,14 +166,12 @@ export default {
     QPopover,
     QVideo,
     QModal,
-    QModalLayout
+    QModalLayout,
+    Toast
   },
 
   data () {
     return {
-
-      modalLabel: 'Always Maximized',
-      modalRef: 'maximizedModal',
       detalRecipe: [],
       detaliId: null,
       detaliTitle: null,
@@ -154,7 +183,9 @@ export default {
       detaliKall: null,
       detaliBelki: null,
       detaliJiri: null,
-      detaliUglevodi: null
+      detaliUglevodi: null,
+      foodChips: [],
+      todos: todoStorage.fetch()
 
     }
   },
@@ -211,12 +242,66 @@ export default {
       this.detaliBelki = this.detaliRecipe[0].metadata.belki[0]
       this.detaliJiri = this.detaliRecipe[0].metadata.jiri[0]
       this.detaliUglevodi = this.detaliRecipe[0].metadata.uglevodi[0]
+      this.foodChips = this.detaliRecipe[0].tag_names
+    },
+
+    addList: function () {
+      if (this.detaliTitle) {
+        this.todos.push({
+          name: this.detaliTitle,
+          products: this.foodChips
+        })
+      }
+    },
+
+    toastWithType (type) {
+      if (type === 'positive') {
+        Toast.create[type]({
+          html: 'Добавленно в список покупок'
+        })
+      }
     }
 
+  },
+
+  watch: {
+    todos: {
+      handler: function (todos) {
+        todoStorage.save(todos)
+      }
+    }
   }
 
 }
 </script>
 
 <style>
+.bt-30px {
+  height: 30px;
+}
+
+.right, .left {
+  width: 50%;
+}
+
+.fl_right {
+  float: right;
+}
+
+.fl_right i {
+  margin-right: 0px;
+}
+
+.network_flex {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.network_flex span {
+  width: 100%;
+  display: block;
+  margin-bottom: 5px;
+  background: #a9a9a94a;
+  padding: 5px 10px;
+}
 </style>

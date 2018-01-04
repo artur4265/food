@@ -15,13 +15,13 @@ import Quasar from 'quasar'
 import router from './router'
 import { store } from './store/store'
 import VueResource from 'vue-resource'
-import lodash from 'lodash'
-import VueLodash from 'vue-lodash'
+import SocialSharing from 'vue-social-sharing'
+import 'quasar-extras/fontawesome'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(VueResource)
-Vue.use(VueLodash, lodash)
+Vue.use(SocialSharing)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')
