@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
   state: {
     requests: '',
     recipes: [],
-    categories: []
+    categories: [],
+    wpTotal: ''
   },
 
   mutations: {
@@ -24,6 +25,10 @@ export const store = new Vuex.Store({
 
     setRequest (state, requests) {
       state.requests = requests
+    },
+
+    setWpTotal (state, wpTotal) {
+      state.wpTotal = wpTotal
     }
 
   },

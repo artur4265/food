@@ -9,4 +9,14 @@ var todoStorage = {
   }
 }
 
-export { todoStorage }
+var recipeStorage = {
+  fetch: function () {
+    var recipe = JSON.parse(localStorage.getItem('vue-js-recipe-P7oZi9sL') || '[]')
+    return recipe
+  },
+  save: function (recipe) {
+    localStorage.setItem('vue-js-recipe-P7oZi9sL', JSON.stringify(recipe))
+  }
+}
+
+export { todoStorage, recipeStorage }

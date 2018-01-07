@@ -20,24 +20,7 @@
     </q-toolbar>
 
     <div slot="left">
-
-      <q-list no-border link inset-delimiter>
-        <q-list-header>Essential Links</q-list-header>
-
-          <q-side-link item to="/" exact>
-            <q-item-main label="Home" />
-          </q-side-link>
-
-          <q-side-link item to="/news">
-            <q-item-main label="Поиск рецептов"/>
-          </q-side-link>
-
-          <q-side-link item to="/shopping-list">
-            <q-item-main label="Список покупок" />
-          </q-side-link>
-
-
-      </q-list>
+      <left-menu></left-menu>
     </div>
 
 
@@ -48,9 +31,12 @@
 
       <div style="width: 500px; max-width: 90vw;">
         <q-input v-model="nameShoppingList" placeholder="Название списка продуктов" />
-        <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
+        <q-chips-input v-model="foodChips" class="no-margin" placeholder="Продукты"/>
         <q-btn class="bt-mt full-width" color="primary" icon="add_shopping_cart" @click="addTodo()">Сохранить список продуктов</q-btn>
       </div>
+
+      <p v-if="empty" class="notfull">Список пуст</p>
+
     </div>
 
     <div class="layout-padding card-examples row items-start">
@@ -74,8 +60,7 @@
           color="primary"
           round
           v-back-to-top.animate="{offset: 50, duration: 200}"
-          class="animate-pop"
-        >
+          class="animate-pop">
           <q-icon name="keyboard_arrow_up" />
         </q-btn>
       </q-fixed-position>
@@ -91,6 +76,7 @@
 </template>
 
 <script>
+import LeftMenu from './chunks/LeftMenu.vue'
 import { todoStorage } from '../store/localstore'
 import {
   QCard,
@@ -160,7 +146,8 @@ export default {
     QStepper,
     QStep,
     QStepperNavigation,
-    QInnerLoading
+    QInnerLoading,
+    'left-menu': LeftMenu
   },
 
   directives: {
@@ -172,13 +159,13 @@ export default {
       nameShoppingList: '',
       foodChips: [],
       shopList: [],
-      test: [],
+      empty: true,
       todos: todoStorage.fetch()
     }
   },
 
   created: function () {
-
+    this.checkTodo()
   },
 
   computed: {
@@ -186,8 +173,10 @@ export default {
   },
 
   methods: {
-    send () {
-      console.log(this.foodChips)
+    checkTodo () {
+      if (this.todos > 0) {
+        this.empty = false
+      }
     },
 
     addTodo: function () {
@@ -226,5 +215,10 @@ export default {
 .foodchip {
   margin-right: 3px;
   margin-bottom: 3px;
+}
+
+.notfull {
+  margin-top: 30px;
+  text-transform: uppercase;
 }
 </style>

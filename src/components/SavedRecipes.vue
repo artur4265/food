@@ -1,22 +1,46 @@
 <template>
-  <div id="news-list">
 
-  <div class="layout-padding card-examples row items-start">
+  <q-layout
+    ref="layout"
+    view="lHh Lpr fff"
+    :left-class="{'bg-grey-2': true}"
+  >
+    <q-toolbar slot="header" class="glossy">
+      <q-btn
+        flat
+        @click="$refs.layout.toggleLeft()"
+      >
+        <q-icon name="menu" />
+      </q-btn>
 
-      <q-card inline v-for="recipe in recipes"  v-bind:key="recipe.id">
-        <q-card-media v-if="recipe.acf.link_to_another_source !== false">
-          <img v-bind:src="recipe.acf.link_to_another_source">
+      <q-toolbar-title>
+        Wath to Cook
+        <div slot="subtitle">v{{$q.version}}</div>
+      </q-toolbar-title>
+    </q-toolbar>
+
+    <div slot="left">
+      <left-menu></left-menu>
+    </div>
+
+    <div class="layout-padding docs-input row justify-center">
+
+      <p>Сохраненные рецепты <q-icon name="favorite_border" /></p>
+
+
+      <q-card inline v-for="(recipe, index) in recipes"  v-bind:key="index">
+        <q-card-media v-if="recipe.img !== false">
+          <img v-bind:src="recipe.img">
         </q-card-media>
         <q-card-media v-else>
           <img src="../assets/nia.jpg">
         </q-card-media>
         <q-card-title>
-          {{ recipe.title.rendered }}
-          <!--<span slot="subtitle">Subtitle</span>-->
+          {{ recipe.name }}
         </q-card-title>
-        <!--<q-card-main v-html="recipe.content.rendered"></q-card-main>-->
         <q-card-actions>
           <q-btn outline color="primary" @click="$refs.maximizedModal.open(); getDetaliRecipe(recipe.id);">смотреть</q-btn>
+          <q-btn outline color="primary" v-on:click="deleteRecipe(index);">удалить</q-btn>
         </q-card-actions>
       </q-card>
 
@@ -32,9 +56,6 @@
               <q-btn class="fl_right bt-30px" slot="right" icon="more_vert" name="more_vert" small>
                   <q-popover ref="popover">
                     <q-list link class="no-border">
-                      <q-item @click="$refs.popover.close(); savedRecipe(); toastWithType('positive', 'избранное');">
-                        <q-item-main label="Добавить в избранное" />
-                      </q-item>
                       <q-item @click="$refs.popover.close(); addList(); toastWithType('positive', 'список покупок');">
                         <q-item-main label="Сохранить в список покупок" />
                       </q-item>
@@ -84,7 +105,6 @@
       </q-list>
 
           <q-card-actions>
-            <!-- <q-btn color="red" @click="$refs.maximizedModal.close()">Назад</q-btn> -->
           </q-card-actions>
         </q-card>
 
@@ -111,14 +131,36 @@
     </q-modal>
 
 
-      </q-modal>
+    </q-modal>
 
-  </div>
 
-  </div>
+
+      
+
+    </div>
+
+      <q-fixed-position corner="bottom-right" :offset="[18, 18]">
+        <q-btn
+          color="primary"
+          round
+          v-back-to-top.animate="{offset: 50, duration: 200}"
+          class="animate-pop">
+          <q-icon name="keyboard_arrow_up" />
+        </q-btn>
+      </q-fixed-position>
+
+
+
+
+
+
+
+  </q-layout>
+
 </template>
 
 <script>
+import LeftMenu from './chunks/LeftMenu.vue'
 import { todoStorage, recipeStorage } from '../store/localstore'
 import {
   QCard,
@@ -127,20 +169,34 @@ import {
   QCardActions,
   QCardSeparator,
   QCardMain,
-  QList,
-  QItem,
-  QItemMain,
-  QItemSide,
-  QItemTile,
-  QCollapsible,
-  QRating,
+  QLayout,
+  QToolbar,
+  QToolbarTitle,
   QBtn,
-  QParallax,
   QIcon,
-  QPopover,
-  QVideo,
+  QList,
+  QListHeader,
+  QItem,
+  QItemSide,
+  QItemMain,
+  QSideLink,
+  QField,
+  QOptionGroup,
+  QChip,
+  QInput,
+  QChipsInput,
+  QRadio,
+  QDialogSelect,
+  BackToTop,
+  QFixedPosition,
   QModal,
   QModalLayout,
+  QStepper,
+  QStep,
+  QStepperNavigation,
+  QInnerLoading,
+  QCollapsible,
+  QPopover,
   Toast
 } from 'quasar'
 
@@ -153,21 +209,39 @@ export default {
     QCardActions,
     QCardSeparator,
     QCardMain,
-    QList,
-    QItem,
-    QItemMain,
-    QItemSide,
-    QItemTile,
-    QCollapsible,
-    QRating,
+    QLayout,
+    QOptionGroup,
+    QField,
+    QToolbar,
+    QToolbarTitle,
     QBtn,
-    QParallax,
     QIcon,
-    QPopover,
-    QVideo,
+    QList,
+    QListHeader,
+    QItem,
+    QItemSide,
+    QItemMain,
+    QSideLink,
+    QChip,
+    QInput,
+    QChipsInput,
+    QRadio,
+    QDialogSelect,
+    QFixedPosition,
     QModal,
     QModalLayout,
-    Toast
+    QStepper,
+    QStep,
+    QStepperNavigation,
+    QInnerLoading,
+    QCollapsible,
+    QPopover,
+    Toast,
+    'left-menu': LeftMenu
+  },
+
+  directives: {
+    BackToTop
   },
 
   data () {
@@ -186,65 +260,30 @@ export default {
       detaliUglevodi: null,
       foodChips: [],
       todos: todoStorage.fetch(),
-      recipe: recipeStorage.fetch()
-
+      recipes: recipeStorage.fetch()
     }
-  },
-
-  computed: {
-    recipes () {
-      return this.$store.state.recipes
-    },
-
-    requests () {
-      return this.$store.state.requests
-    }
-
-    // getDetaliRecipe: function (id) {
-    //   console.log(this.$store.getters.getRecipeById(0))
-    // }
-
-  },
-
-  created: function () {
-    this.getRecipeslist()
   },
 
   methods: {
-
-    getRecipeslist () {
-      this.$store.watch((state) => state.requests, () => {
-        // console.log(this.$store.state.requests + 'new')
-        if (this.$store.state.requests !== '') {
-          this.notFoundRecipes = ''
-          this.$http.get(this.$store.state.requests).then(response => {
-            this.$store.commit('setRecipeslist', response.data)
-            return this.$store.state.recipes
-          })
-        }
-      })
-    },
-
     getDetaliRecipe: function (id) {
       console.log(id)
-      var filterRecipe = this.$store.state.recipes
+      var filterRecipe = this.recipes
 
       function checkId (recipe) {
         return recipe.id === id
       }
-
       this.detaliRecipe = Object.values(filterRecipe.filter(checkId))
       this.detaliId = this.detaliRecipe[0].id
-      this.detaliTitle = this.detaliRecipe[0].title.rendered
-      this.detaliText = this.detaliRecipe[0].content.rendered
-      this.detaliSostav = this.detaliRecipe[0].metadata.sostav[0]
-      this.detaliImg = this.detaliRecipe[0].metadata.link_to_another_source[0]
-      this.detaliTimeCook = this.detaliRecipe[0].metadata.time_to_cook[0]
-      this.detaliKall = this.detaliRecipe[0].metadata.kkal[0]
-      this.detaliBelki = this.detaliRecipe[0].metadata.belki[0]
-      this.detaliJiri = this.detaliRecipe[0].metadata.jiri[0]
-      this.detaliUglevodi = this.detaliRecipe[0].metadata.uglevodi[0]
-      this.foodChips = this.detaliRecipe[0].tag_names
+      this.detaliTitle = this.detaliRecipe[0].name
+      this.detaliText = this.detaliRecipe[0].text
+      this.detaliSostav = this.detaliRecipe[0].sostav
+      this.detaliImg = this.detaliRecipe[0].img
+      this.detaliTimeCook = this.detaliRecipe[0].timeCook
+      this.detaliKall = this.detaliRecipe[0].kkal
+      this.detaliBelki = this.detaliRecipe[0].belok
+      this.detaliJiri = this.detaliRecipe[0].fat
+      this.detaliUglevodi = this.detaliRecipe[0].uglevod
+      this.foodChips = this.detaliRecipe[0].products
     },
 
     addList: function () {
@@ -256,32 +295,17 @@ export default {
       }
     },
 
-    savedRecipe: function () {
-      if (this.detaliTitle) {
-        this.recipe.push({
-          id: this.detaliId,
-          name: this.detaliTitle,
-          text: this.detaliText,
-          sostav: this.detaliSostav,
-          img: this.detaliImg,
-          timeCook: this.detaliTimeCook,
-          kkal: this.detaliKall,
-          belok: this.detaliBelki,
-          fat: this.detaliJiri,
-          uglevod: this.detaliUglevodi,
-          products: this.foodChips
-        })
-      }
-    },
-
     toastWithType (type, text) {
       if (type === 'positive') {
         Toast.create[type]({
           html: 'Добавленно в ' + text
         })
       }
-    }
+    },
 
+    deleteRecipe: function (index) {
+      this.recipes.splice(index, 1)
+    }
   },
 
   watch: {
@@ -290,13 +314,12 @@ export default {
         todoStorage.save(todos)
       }
     },
-    recipe: {
+    recipes: {
       handler: function (recipe) {
         recipeStorage.save(recipe)
       }
     }
   }
-
 }
 </script>
 

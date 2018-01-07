@@ -12,4 +12,13 @@
 export default {}
 </script>
 
-<style></style>
+<style>
+.q-list-link > .q-item, .q-item-link {
+    cursor: pointer;
+    color: #7d7d7d;
+}
+
+.q-list-link > .q-item, .q-item-link i{
+    padding-right: 10px;
+}
+</style>

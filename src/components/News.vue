@@ -20,26 +20,8 @@
     </q-toolbar>
 
     <div slot="left">
-
-      <q-list no-border link inset-delimiter>
-        <q-list-header>Essential Links</q-list-header>
-
-          <q-side-link item to="/" exact>
-            <q-item-main label="Home" />
-          </q-side-link>
-
-          <q-side-link item to="/news">
-            <q-item-main label="Поиск рецептов"/>
-          </q-side-link>
-
-          <q-side-link item to="/shopping-list">
-            <q-item-main label="Список покупок" />
-          </q-side-link>
-
-
-      </q-list>
+      <left-menu></left-menu>
     </div>
-
 
 
     <div class="layout-padding docs-input row justify-center">
@@ -106,7 +88,7 @@
             </q-stepper>
 
       <news-list></news-list>
-
+      <q-pagination v-if="pagination" v-model="page" :max="17" />
     </div>
 
       <q-fixed-position corner="bottom-right" :offset="[18, 18]">
@@ -128,6 +110,7 @@
 <script>
 
 import NewsList from './NewsList.vue'
+import LeftMenu from './chunks/LeftMenu.vue'
 import {
   QLayout,
   QToolbar,
@@ -154,7 +137,8 @@ import {
   QStepper,
   QStep,
   QStepperNavigation,
-  QInnerLoading
+  QInnerLoading,
+  QPagination
 } from 'quasar'
 
 export default {
@@ -185,7 +169,9 @@ export default {
     QStep,
     QStepperNavigation,
     QInnerLoading,
-    'news-list': NewsList
+    QPagination,
+    'news-list': NewsList,
+    'left-menu': LeftMenu
   },
 
   directives: {
@@ -203,7 +189,9 @@ export default {
       progress: false,
       open: false,
       optionsCat: [],
-      options: ['contractable', 'disable_payment', 'step_error']
+      options: ['contractable', 'disable_payment', 'step_error'],
+      pagination: false,
+      page: 1
     }
   },
 
@@ -212,6 +200,7 @@ export default {
   },
 
   computed: {
+
     alt () {
       return this.options.includes('alt')
     },
@@ -223,14 +212,15 @@ export default {
   },
 
   methods: {
-    send () {
-      console.log(this.foodChips)
+    WpTotal () {
+      console.log(this.$store.state.wpTotal)
     },
 
     simulateProgress (e, done) {
       // simulate a delay
-      console.log(this.foodChips)
+      // console.log(this.foodChips)
       this.createRequest()
+      this.WpTotal()
       setTimeout(done, 1000)
     },
 
@@ -260,6 +250,14 @@ export default {
         enteredProducts = '&filter[s]=' + this.foodChips
       }
 
+      this.$http.get(req + catPart + enteredProducts).then(res => {
+        var wpTotal = res.headers.get('x-wp-totalpages')
+        this.$store.commit('setWpTotal', wpTotal)
+      })
+
+      if (this.$store.state.wpTotal >= 1) {
+        this.pagination = true
+      }
       this.$store.commit('setRequest', req + catPart + enteredProducts)
       // console.log(this.$store.state.requests + this.selectCat + enteredProducts)
     }
