@@ -26,6 +26,9 @@
 
     <div class="layout-padding docs-input row justify-center">
 
+      <cat-list></cat-list>
+
+
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
               <q-step default name="campaign" title="Категория блюд">
                 <p>Выберите категорию рецептов</p>
@@ -111,6 +114,7 @@
 
 import NewsList from './NewsList.vue'
 import LeftMenu from './chunks/LeftMenu.vue'
+import CatList from './chunks/CatList.vue'
 import {
   QLayout,
   QToolbar,
@@ -171,7 +175,8 @@ export default {
     QInnerLoading,
     QPagination,
     'news-list': NewsList,
-    'left-menu': LeftMenu
+    'left-menu': LeftMenu,
+    'cat-list': CatList
   },
 
   directives: {
