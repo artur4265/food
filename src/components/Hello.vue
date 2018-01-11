@@ -22,18 +22,20 @@
       <left-menu></left-menu>
     </div>
 
+<!-- <router-view /> -->
 
-    <!--
-      Replace following <div> with
-      <router-view /> component
-      if using subRoutes
-    -->
-<router-view />
-    <div class="layout-padding logo-container non-selectable no-pointer-events">
-      <!-- <div class="logo">
-        <img src="~assets/home.png">
-        <q-side-link to="/news" icon="rss feed" label="Twitter">Начать поиск рецептов</q-side-link>
-      </div> -->
+    <div class="layout-padding docs-input row justify-center home-lay">
+
+      <div class="home">
+        <div class="logo">
+          <img src="../assets/logo.svg">
+        </div>
+        <h2 class="welcome">What to cook</h2>
+        <p>Приложение помогающие найти нужный рецепт блюда под имеющиеся Ваши продукты.</p>
+      <q-side-link to="/news" class="go">Начать поиск</q-side-link>
+      </div>
+
+
     </div>
   </q-layout>
 </template>
@@ -91,6 +93,50 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style>
+
+.home-lay {
+background: #00d2ff;  /* fallback for old browsers */
+background: -webkit-linear-gradient(#3a7bd5, #00d2ff);
+background: -moz-linear-gradient(#3a7bd5, #00d2ff);
+background: -o-linear-gradient(#3a7bd5, #00d2ff);
+background: linear-gradient(#3a7bd5, #00d2ff);
+min-height: calc(100vh - 50px);
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-color: white;
+  border-radius: 10px;
+  max-height: 490px;
+}
+
+.home .logo img{
+  width: 150px;
+}
+
+.home .welcome {
+  padding: 12px;
+  color: #2788cc;
+}
+
+.home p {
+    width: 310px;
+    margin: 0 auto;
+    font-weight: 500;
+    color: #2788cc;
+}
+.home .go {
+background-color: #2851aa;
+    padding: 12px;
+    width: 260px;
+    margin: 0 auto;
+    border-radius: 25px;
+    color: white;
+    margin-top: 30px;
+    text-transform: uppercase;
+}
 
 </style>
