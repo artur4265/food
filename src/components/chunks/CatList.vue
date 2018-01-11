@@ -1,8 +1,9 @@
 <template>
-<div>
+<div class="catlist">
   <div class="imgcat" v-for="(cat, index) in catdata" v-bind:key="index">
     <p>{{cat.name}}</p>
-    <q-radio v-model="radio1" @change="show()" v-bind:val="cat.url" />
+    <img v-bind:src="cat.acf.cat_foto" alt="">
+    <q-radio v-model="radio1" @change="show()" v-bind:val="cat.id" />
   </div>
 </div>
 </template>
@@ -37,21 +38,44 @@ export default {
   data () {
     return {
       radio1: '',
-      catdata: [
-        {name: '111', img: '/img/nia.625d1af.jpg', url: '111'},
-        {name: '222', img: 'assets/nia.jpg', url: '222'},
-        {name: '333', img: '../../assets/nia.jpg', url: '333'}
-      ]
+      catdata: []
     }
+  },
+
+  created: function () {
+    this.getCategorieslistTest()
   },
 
   methods: {
     show (val) {
       console.log(this.radio1)
+    },
+
+    getCategorieslistTest () {
+      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+        this.catdata = response.data
+      })
     }
   }
 }
 </script>
 
 <style>
+.catlist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.imgcat {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.imgcat img {
+    width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
 </style>

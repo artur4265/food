@@ -26,7 +26,7 @@
 
     <div class="layout-padding docs-input row justify-center">
 
-      <!-- <cat-list></cat-list> -->
+       <!-- <cat-list></cat-list>  -->
 
 
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
