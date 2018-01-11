@@ -13,6 +13,7 @@ export default {}
 </script>
 
 <style>
+
 .q-list-link > .q-item, .q-item-link {
     cursor: pointer;
     color: #7d7d7d;
