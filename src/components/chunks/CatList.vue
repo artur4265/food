@@ -68,14 +68,29 @@ export default {
 }
 
 .imgcat {
+width: 48%;
+    /* height: 100px; */
+    -o-object-fit: cover;
+    position: relative;
+    object-fit: cover;
+    padding: 5px;
+    margin: 3px;
+    box-shadow: 0px 1px 2px 1px #00000036;
+}
+
+.imgcat img {
   width: 100px;
   height: 100px;
   object-fit: cover;
 }
 
-.imgcat img {
-    width: 100px;
-  height: 100px;
-  object-fit: cover;
+.imgcat p {
+    font-size: 1rem;
+    letter-spacing: 0;
+    margin: 0 0 1rem;
+    line-height: 24px;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    position: absolute;
 }
 </style>

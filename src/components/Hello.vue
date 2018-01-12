@@ -120,6 +120,7 @@ min-height: calc(100vh - 50px);
 .home .welcome {
   padding: 12px;
   color: #2788cc;
+  font-size: 2.8rem;
 }
 
 .home p {
@@ -129,14 +130,16 @@ min-height: calc(100vh - 50px);
     color: #2788cc;
 }
 .home .go {
-background-color: #2851aa;
+    background-color: #ffffff;
     padding: 12px;
-    width: 260px;
+    width: 200px;
     margin: 0 auto;
     border-radius: 25px;
-    color: white;
+    color: #2851aa;
     margin-top: 30px;
     text-transform: uppercase;
+    text-shadow: 0px 0px 1px #2851aa;
+    border: 2px solid #2851aa;
 }
 
 </style>

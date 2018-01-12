@@ -32,7 +32,11 @@
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
               <q-step default name="campaign" title="Категория блюд">
                 <p>Выберите категорию рецептов</p>
+<<<<<<< HEAD
 <cat-list></cat-list> 
+=======
+                <cat-list></cat-list> 
+>>>>>>> b4dd80dab6d0417b9f0d2c92d603c3ec51bd0771
                 <q-dialog-select
                         stack-label="блюда"
                         inverted
@@ -91,7 +95,9 @@
             </q-stepper>
 
       <news-list></news-list>
-      <q-pagination v-if="pagination" v-model="page" :max="17" />
+
+      <q-btn color="primary" round v-on:click="WpTotal()"  v-if="pagination" >more</q-btn>
+
     </div>
 
       <q-fixed-position corner="bottom-right" :offset="[18, 18]">
@@ -218,14 +224,17 @@ export default {
 
   methods: {
     WpTotal () {
+      if (this.page < this.$store.state.wpTotal) {
+        this.page += 1
+      }
+      // this.createRequest('&page' + this.page)
+      console.log(this.page)
       console.log(this.$store.state.wpTotal)
     },
 
     simulateProgress (e, done) {
-      // simulate a delay
-      // console.log(this.foodChips)
       this.createRequest()
-      this.WpTotal()
+      // this.WpTotal()
       setTimeout(done, 1000)
     },
 
@@ -260,9 +269,10 @@ export default {
         this.$store.commit('setWpTotal', wpTotal)
       })
 
-      if (this.$store.state.wpTotal >= 1) {
+      if (this.$store.state.wpTotal > 1) {
         this.pagination = true
       }
+
       this.$store.commit('setRequest', req + catPart + enteredProducts)
       // console.log(this.$store.state.requests + this.selectCat + enteredProducts)
     }
