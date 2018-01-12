@@ -32,12 +32,18 @@
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
               <q-step default name="campaign" title="Категория блюд">
                 <p>Выберите категорию рецептов</p>
-<<<<<<< HEAD
-<cat-list></cat-list> 
-=======
-                <cat-list></cat-list> 
->>>>>>> b4dd80dab6d0417b9f0d2c92d603c3ec51bd0771
+
+                <!-- <cat-list></cat-list> -->
+                <div class="catlist" v-if="img_mode !== false">
+                  <label class="imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
+                    <img v-bind:src="cat.acf.cat_foto" alt="">
+                    <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr"/>
+                    <span></span>
+                    <p>{{cat.name}}</p>
+                  </label>
+                </div>
                 <q-dialog-select
+                        v-else
                         stack-label="блюда"
                         inverted
                         color="amber"
@@ -120,7 +126,7 @@
 
 import NewsList from './NewsList.vue'
 import LeftMenu from './chunks/LeftMenu.vue'
-import CatList from './chunks/CatList.vue'
+//  import CatList from './chunks/CatList.vue'
 import {
   QLayout,
   QToolbar,
@@ -181,8 +187,8 @@ export default {
     QInnerLoading,
     QPagination,
     'news-list': NewsList,
-    'left-menu': LeftMenu,
-    'cat-list': CatList
+    'left-menu': LeftMenu
+    //  'cat-list': CatList
   },
 
   directives: {
@@ -191,11 +197,13 @@ export default {
 
   data () {
     return {
+      img_mode: true,
       step: 'first',
       step2: 'first',
       searchFoods: [],
       piceFood: null,
       foodChips: [],
+      catdata: [],
       selectCat: '',
       progress: false,
       open: false,
@@ -208,6 +216,7 @@ export default {
 
   created: function () {
     this.getCategorieslist()
+    this.getCategorieslistTest()
   },
 
   computed: {
@@ -236,6 +245,16 @@ export default {
       this.createRequest()
       // this.WpTotal()
       setTimeout(done, 1000)
+    },
+
+    getCategorieslistTest () {
+      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+        this.catdata = response.data
+      })
+    },
+
+    getCatId (val) {
+      this.selectCat = val
     },
 
     getCategorieslist () {
@@ -267,10 +286,16 @@ export default {
       this.$http.get(req + catPart + enteredProducts).then(res => {
         var wpTotal = res.headers.get('x-wp-totalpages')
         this.$store.commit('setWpTotal', wpTotal)
+        if (wpTotal > 1) {
+          this.pagination = true
+        }
+        else {
+          this.pagination = false
+        }
       })
 
       if (this.$store.state.wpTotal > 1) {
-        this.pagination = true
+        // this.pagination = true
       }
 
       this.$store.commit('setRequest', req + catPart + enteredProducts)
@@ -294,4 +319,57 @@ export default {
 </script>
 
 <style>
+.catlist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.imgcat {
+width: 48%;
+    -o-object-fit: cover;
+    position: relative;
+    object-fit: cover;
+    padding: 5px;
+    margin: 3px;
+    box-shadow: 0px 1px 2px 1px #00000036;
+}
+
+.imgcat img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.imgcat p {
+  font-size: 1rem;
+  letter-spacing: 0;
+  margin: 0;
+  line-height: 24px;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 10px);
+  background: white;
+}
+
+.imgcat input[type="radio"] {
+    display:none;
+}
+
+.imgcat input[type="radio"] {
+    color:#f2f2f2;
+    font-family:Arial, sans-serif;
+}
+
+.imgcat input[type="radio"]:checked + span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0px;
+    background-color: #0f8ee47a;
+    z-index: 4;
+}
 </style>
