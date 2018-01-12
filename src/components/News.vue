@@ -26,13 +26,13 @@
 
     <div class="layout-padding docs-input row justify-center">
 
-       <!-- <cat-list></cat-list>  -->
+       
 
 
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
               <q-step default name="campaign" title="Категория блюд">
                 <p>Выберите категорию рецептов</p>
-
+<cat-list></cat-list> 
                 <q-dialog-select
                         stack-label="блюда"
                         inverted
