@@ -219,7 +219,7 @@ export default {
           this.notFoundRecipes = ''
           this.$http.get(this.$store.state.requests).then(response => {
             this.$store.commit('setRecipeslist', response.data)
-            return this.$store.state.recipes
+            // return this.$store.state.recipes
           })
         }
       })

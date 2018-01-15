@@ -77,7 +77,7 @@
 
                 <q-stepper-navigation v-if="!globalNavigation">
                   <!--<q-btn color="primary" @click="$refs.stepper.goToStep('campaign')">Restart</q-btn>-->
-                  <q-btn color="primary" flat @click="$refs.stepper.previous()">Назад</q-btn>
+                  <q-btn color="primary" flat @click="$refs.stepper.previous(); resetRage();">Назад</q-btn>
                   <q-btn  class="full-width" loader color="primary" @click="simulateProgress" :disable="!progress">Начать поиск</q-btn>
                 </q-stepper-navigation>
               </q-step>
@@ -102,7 +102,7 @@
 
       <news-list></news-list>
 
-      <q-btn color="primary" round v-on:click="WpTotal()"  v-if="pagination" >more</q-btn>
+      <q-btn color="primary" round v-on:click="WpTotal()"  v-if="pagination" >ещё</q-btn>
 
     </div>
 
@@ -232,13 +232,21 @@ export default {
   },
 
   methods: {
+
+    resetRage () {
+      this.page = 1
+    },
+
     WpTotal () {
       if (this.page < this.$store.state.wpTotal) {
         this.page += 1
+        this.$http.get(this.$store.state.requests + '&page=' + this.page).then(response => {
+          this.$store.commit('moreLoadRecipes', response.data)
+        })
+        if (this.page >= this.$store.state.wpTotal) {
+          this.pagination = false
+        }
       }
-      // this.createRequest('&page' + this.page)
-      console.log(this.page)
-      console.log(this.$store.state.wpTotal)
     },
 
     simulateProgress (e, done) {
@@ -294,12 +302,11 @@ export default {
         }
       })
 
-      if (this.$store.state.wpTotal > 1) {
-        // this.pagination = true
-      }
+      // if (this.page = this.$store.state.wpTotal) {
+      //   this.pagination = false
+      // }
 
       this.$store.commit('setRequest', req + catPart + enteredProducts)
-      // console.log(this.$store.state.requests + this.selectCat + enteredProducts)
     }
 
   },

@@ -19,6 +19,10 @@ export const store = new Vuex.Store({
       state.recipes = recipes
     },
 
+    moreLoadRecipes (state, moreRecipes) {
+      state.recipes = state.recipes.concat(moreRecipes)
+    },
+
     setCategorieslist (state, categories) {
       state.categories = categories
     },
