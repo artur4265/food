@@ -33,7 +33,7 @@
             <q-item-main label="FAQ" />
           </q-side-link>
 
-          <q-side-link item to="/shopping-list">
+          <q-side-link item to="/contacts">
             <q-icon size="22px" name="info" />
             <q-item-main label="Контакты" />
           </q-side-link>

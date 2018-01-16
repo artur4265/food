@@ -1,14 +1,12 @@
 <template>
-
-
-<div class="catlist">
-  <label class="imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
-    <img v-bind:src="cat.acf.cat_foto" alt="">
-    <input type="radio" v-bind:id="cat.id" @change="show(cat.id)" name="rr"/>
-    <span></span>
-    <p>{{cat.name}}</p>
-  </label>
-</div>
+  <div class="catlist">
+    <label class="imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
+      <img v-bind:src="cat.acf.cat_foto" alt="">
+      <input type="radio" v-bind:id="cat.id" @change="show(cat.id)" name="rr" />
+      <span></span>
+      <p>{{cat.name}}</p>
+    </label>
+  </div>
 </template>
 
 <script>
@@ -38,23 +36,23 @@ export default {
     QOptionGroup
   },
 
-  data () {
+  data() {
     return {
       radio1: '',
       catdata: []
     }
   },
 
-  created: function () {
+  created: function() {
     this.getCategorieslistTest()
   },
 
   methods: {
-    show (val) {
+    show(val) {
       console.log(val)
     },
 
-    getCategorieslistTest () {
+    getCategorieslistTest() {
       this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
         this.catdata = response.data
       })
@@ -64,7 +62,6 @@ export default {
 </script>
 
 <style>
-
 .catlist {
   display: flex;
   flex-direction: row;
@@ -72,13 +69,13 @@ export default {
 }
 
 .imgcat {
-width: 48%;
-    -o-object-fit: cover;
-    position: relative;
-    object-fit: cover;
-    padding: 5px;
-    margin: 3px;
-    box-shadow: 0px 1px 2px 1px #00000036;
+  width: 48%;
+  -o-object-fit: cover;
+  position: relative;
+  object-fit: cover;
+  padding: 5px;
+  margin: 3px;
+  box-shadow: 0px 1px 2px 1px #00000036;
 }
 
 .imgcat img {
@@ -101,21 +98,21 @@ width: 48%;
 }
 
 .imgcat input[type="radio"] {
-    display:none;
+  display: none;
 }
 
 .imgcat input[type="radio"] {
-    color:#f2f2f2;
-    font-family:Arial, sans-serif;
+  color: #f2f2f2;
+  font-family: Arial, sans-serif;
 }
 
-.imgcat input[type="radio"]:checked + span {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0px;
-    background-color: #0f8ee47a;
-    z-index: 4;
+.imgcat input[type="radio"]:checked+span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0px;
+  background-color: #0f8ee47a;
+  z-index: 4;
 }
 </style>
