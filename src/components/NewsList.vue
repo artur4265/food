@@ -3,6 +3,10 @@
 
     <div class="layout-padding card-examples row items-start">
 
+
+
+<!-- Card preivie -->
+
       <q-card inline v-for="recipe in recipes" v-bind:key="recipe.id">
         <q-card-media v-if="recipe.acf.link_to_another_source !== false">
           <img v-bind:src="recipe.acf.link_to_another_source">
@@ -20,15 +24,18 @@
         </q-card-actions>
       </q-card>
 
-      <q-modal ref="maximizedModal" maximized :content-css="{padding: '5px'}">
-        <q-card>
 
-          <q-card-actions>
-            <div class="left">
-              <q-btn color="primary" class="bt-30px" @click="$refs.maximizedModal.close()" small>
-                <q-icon name="reply" /></q-btn>
+
+<!-- Detali card -->
+
+      <q-modal class="popup_detali" ref="maximizedModal" maximized>
+        <q-card class="popup_detali__card">
+          <q-card-actions class="detali_actions--mod-absolute">
+            <div class="col-6">
+              <q-btn color="" class="bt-30px" @click="$refs.maximizedModal.close()" small>
+                <q-icon name="keyboard_backspace" /></q-btn>
             </div>
-            <div class="right">
+            <div class="col-6">
               <q-btn class="fl_right bt-30px" slot="right" icon="more_vert" name="more_vert" small>
                 <q-popover ref="popover">
                   <q-list link class="no-border">
@@ -48,7 +55,7 @@
           </q-card-actions>
 
           <q-card-media v-if="detaliImg !== false">
-            <img v-bind:src="detaliImg">
+            <img class="detali_img" v-bind:src="detaliImg">
           </q-card-media>
           <q-card-media v-else>
             <img src="../assets/nia.jpg">
@@ -176,7 +183,7 @@ export default {
     Toast
   },
 
-  data() {
+  data () {
     return {
       detalRecipe: [],
       detaliId: null,
@@ -198,11 +205,11 @@ export default {
   },
 
   computed: {
-    recipes() {
+    recipes () {
       return this.$store.state.recipes
     },
 
-    requests() {
+    requests () {
       return this.$store.state.requests
     }
 
@@ -212,13 +219,13 @@ export default {
 
   },
 
-  created: function() {
+  created: function () {
     this.getRecipeslist()
   },
 
   methods: {
 
-    getRecipeslist() {
+    getRecipeslist () {
       this.$store.watch((state) => state.requests, () => {
         // console.log(this.$store.state.requests + 'new')
         if (this.$store.state.requests !== '') {
@@ -231,11 +238,11 @@ export default {
       })
     },
 
-    getDetaliRecipe: function(id) {
+    getDetaliRecipe: function (id) {
       console.log(id)
       var filterRecipe = this.$store.state.recipes
 
-      function checkId(recipe) {
+      function checkId (recipe) {
         return recipe.id === id
       }
 
@@ -253,7 +260,7 @@ export default {
       this.foodChips = this.detaliRecipe[0].tag_names
     },
 
-    addList: function() {
+    addList: function () {
       if (this.detaliTitle) {
         this.todos.push({
           name: this.detaliTitle,
@@ -262,7 +269,7 @@ export default {
       }
     },
 
-    savedRecipe: function() {
+    savedRecipe: function () {
       if (this.detaliTitle) {
         this.recipe.push({
           id: this.detaliId,
@@ -280,7 +287,7 @@ export default {
       }
     },
 
-    toastWithType(type, text) {
+    toastWithType (type, text) {
       if (type === 'positive') {
         Toast.create[type]({
           html: 'Добавленно в ' + text
@@ -292,12 +299,12 @@ export default {
 
   watch: {
     todos: {
-      handler: function(todos) {
+      handler: function (todos) {
         todoStorage.save(todos)
       }
     },
     recipe: {
-      handler: function(recipe) {
+      handler: function (recipe) {
         recipeStorage.save(recipe)
       }
     }
@@ -307,12 +314,18 @@ export default {
 </script>
 
 <style>
-.bt-30px {
+.popup_detali__card .bt-30px {
   height: 30px;
+  box-shadow: none;
+  color: azure;
 }
 
-.right,
-.left {
+.popup_detali__card .bt-30px .q-icon {
+  font-size: 24px;
+}
+
+.popup_detali__card .right,
+.popup_detali__card .left {
   width: 50%;
 }
 
@@ -337,4 +350,22 @@ export default {
   background: #a9a9a94a;
   padding: 5px 10px;
 }
+
+.popup_detali__card {
+  margin: 0px;
+}
+
+.popup_detali__card .detali_img {
+  height: 320px;
+  object-fit: cover;
+}
+
+.popup_detali__card .detali_actions--mod-absolute {
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+  width: 100%;
+  background-color: #6b6b6b87;
+}
+
 </style>
