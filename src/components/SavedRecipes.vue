@@ -228,7 +228,7 @@ export default {
     BackToTop
   },
 
-  data() {
+  data () {
     return {
       detalRecipe: [],
       detaliId: null,
@@ -249,11 +249,11 @@ export default {
   },
 
   methods: {
-    getDetaliRecipe: function(id) {
+    getDetaliRecipe: function (id) {
       console.log(id)
       var filterRecipe = this.recipes
 
-      function checkId(recipe) {
+      function checkId (recipe) {
         return recipe.id === id
       }
       this.detaliRecipe = Object.values(filterRecipe.filter(checkId))
@@ -270,7 +270,7 @@ export default {
       this.foodChips = this.detaliRecipe[0].products
     },
 
-    addList: function() {
+    addList: function () {
       if (this.detaliTitle) {
         this.todos.push({
           name: this.detaliTitle,
@@ -279,7 +279,7 @@ export default {
       }
     },
 
-    toastWithType(type, text) {
+    toastWithType (type, text) {
       if (type === 'positive') {
         Toast.create[type]({
           html: 'Добавленно в ' + text
@@ -287,19 +287,19 @@ export default {
       }
     },
 
-    deleteRecipe: function(index) {
+    deleteRecipe: function (index) {
       this.recipes.splice(index, 1)
     }
   },
 
   watch: {
     todos: {
-      handler: function(todos) {
+      handler: function (todos) {
         todoStorage.save(todos)
       }
     },
     recipes: {
-      handler: function(recipe) {
+      handler: function (recipe) {
         recipeStorage.save(recipe)
       }
     }

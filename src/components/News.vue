@@ -35,7 +35,7 @@
 
                 <!-- <cat-list></cat-list> -->
                 <div class="catlist" v-if="img_mode !== false">
-                  <label class="imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
+                  <label class="imgcat col-6" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
                     <img v-bind:src="cat.acf.cat_foto" alt="">
                     <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr"/>
                     <span></span>
@@ -210,7 +210,8 @@ export default {
       optionsCat: [],
       options: ['contractable', 'disable_payment', 'step_error'],
       pagination: false,
-      page: 1
+      page: 1,
+      active: false
     }
   },
 
@@ -311,6 +312,13 @@ export default {
 
   },
 
+  destroyed: function () {
+    var emptulist = []
+    var emptureq = ''
+    this.$store.commit('setRecipeslist', emptulist)
+    this.$store.commit('setRequest', emptureq)
+  },
+
   watch: {
     foodChips: function (params) {
       if (this.foodChips.length >= 1) {
@@ -333,10 +341,8 @@ export default {
 }
 
 .imgcat {
-width: 48%;
     -o-object-fit: cover;
     position: relative;
-    object-fit: cover;
     padding: 5px;
     margin: 3px;
     box-shadow: 0px 1px 2px 1px #00000036;

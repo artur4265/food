@@ -97,10 +97,10 @@ export default {
 
 .home-lay {
 background: #00d2ff;  /* fallback for old browsers */
-background: -webkit-linear-gradient(#3a7bd5, #00d2ff);
-background: -moz-linear-gradient(#3a7bd5, #00d2ff);
-background: -o-linear-gradient(#3a7bd5, #00d2ff);
-background: linear-gradient(#3a7bd5, #00d2ff);
+background: -webkit-linear-gradient(#45c1e3, #c782d8);
+background: -moz-linear-gradient(#45c1e3, #c782d8);
+background: -o-linear-gradient(#45c1e3, #c782d8);
+background: linear-gradient(#45c1e3, #c782d8);
 min-height: calc(100vh - 50px);
 }
 

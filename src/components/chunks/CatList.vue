@@ -36,23 +36,23 @@ export default {
     QOptionGroup
   },
 
-  data() {
+  data () {
     return {
       radio1: '',
       catdata: []
     }
   },
 
-  created: function() {
+  created: function () {
     this.getCategorieslistTest()
   },
 
   methods: {
-    show(val) {
+    show (val) {
       console.log(val)
     },
 
-    getCategorieslistTest() {
+    getCategorieslistTest () {
       this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
         this.catdata = response.data
       })
