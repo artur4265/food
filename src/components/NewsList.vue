@@ -347,7 +347,7 @@ export default {
   width: 100%;
   display: block;
   margin-bottom: 5px;
-  background: #a9a9a94a;
+  background: rgba(169, 169, 169, 0.2901960784313726);
   padding: 5px 10px;
 }
 
@@ -365,7 +365,7 @@ export default {
   top: 0px;
   z-index: 1;
   width: 100%;
-  background-color: #6b6b6b87;
+  background-color: rgba(107, 107, 107, 0.5294117647058824);
 }
 
 </style>

@@ -1,15 +1,7 @@
 <template>
-
-  <q-layout
-    ref="layout"
-    view="lHh Lpr fff"
-    :left-class="{'bg-grey-2': true}"
-  >
+  <q-layout ref="layout" view="lHh Lpr fff" :left-class="{'bg-grey-2': true}">
     <q-toolbar slot="header" class="glossy">
-      <q-btn
-        flat
-        @click="$refs.layout.toggleLeft()"
-      >
+      <q-btn flat @click="$refs.layout.toggleLeft()">
         <q-icon name="menu" />
       </q-btn>
 
@@ -23,103 +15,76 @@
       <left-menu></left-menu>
     </div>
 
-
     <div class="layout-padding docs-input row justify-center">
 
-       
-
-
       <q-stepper flat ref="stepper" v-model="step" color="primary" :alternative-labels="alt">
-              <q-step default name="campaign" title="Категория блюд">
-                <p>Выберите категорию рецептов</p>
+        <q-step default name="campaign" title="Категория блюд">
+          <p>Выберите категорию рецептов</p>
 
-                <!-- <cat-list></cat-list> -->
-                <div class="catlist" v-if="img_mode !== false">
-                  <label class="imgcat col-6" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
-                    <img v-bind:src="cat.acf.cat_foto" alt="">
-                    <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr"/>
-                    <span></span>
-                    <p>{{cat.name}}</p>
-                  </label>
-                </div>
-                <q-dialog-select
-                        v-else
-                        stack-label="блюда"
-                        inverted
-                        color="amber"
-                        separator
-                        v-model="selectCat"
-                        :options="optionsCat"
-                        ok-label="Ок"
-                        cancel-label="Отмена"
-                        title="Блюда"
-                      />
+          <!-- <cat-list></cat-list> -->
+          <div class="catlist col" v-if="img_mode !== false">
+            <label class="col-6 imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
+              <div class="imgcat_wrap">
+                <img v-bind:src="cat.acf.cat_foto" alt="">
+                <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr" />
+                <span></span>
+                <p>{{cat.name}}</p>
+              </div>
+            </label>
+          </div>
+          <q-dialog-select v-else stack-label="блюда" inverted color="amber" separator v-model="selectCat" :options="optionsCat" ok-label="Ок" cancel-label="Отмена" title="Блюда" />
 
-                <q-stepper-navigation v-if="!globalNavigation">
-                  <q-btn color="primary" @click="$refs.stepper.next()">Продолжить</q-btn>
-                </q-stepper-navigation>
-              </q-step>
+          <q-stepper-navigation v-if="!globalNavigation">
+            <q-btn color="primary" @click="$refs.stepper.next()">Продолжить</q-btn>
+          </q-stepper-navigation>
+        </q-step>
 
+        <q-step name="create_ad" title="Ингридиенты">
 
-              <q-step name="create_ad" title="Ингридиенты">
+          <p class="caption">Добавьте название продуктов</p>
 
-                <p class="caption">Добавьте название продуктов</p>
+          <q-list>
+            <q-item multiline>
+              <q-item-side icon="edit" />
+              <q-item-main>
+                <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты" />
+              </q-item-main>
+            </q-item>
+          </q-list>
 
-                <q-list>
-                  <q-item multiline>
-                    <q-item-side icon="edit" />
-                    <q-item-main>
-                      <q-chips-input @click="check()" v-model="foodChips" class="no-margin" placeholder="Продукты"/>
-                    </q-item-main>
-                  </q-item>
-                </q-list>
+          <q-stepper-navigation v-if="!globalNavigation">
+            <!--<q-btn color="primary" @click="$refs.stepper.goToStep('campaign')">Restart</q-btn>-->
+            <q-btn color="primary" flat @click="$refs.stepper.previous(); resetRage();">Назад</q-btn>
+            <q-btn class="full-width" loader color="primary" @click="simulateProgress" :disable="!progress">Начать поиск</q-btn>
+          </q-stepper-navigation>
+        </q-step>
 
+        <q-stepper-navigation v-if="globalNavigation">
+          <q-btn v-if="step !== 'campaign'" color="primary" flat @click="$refs.stepper.previous()">
+            Back
+          </q-btn>
 
-                <q-stepper-navigation v-if="!globalNavigation">
-                  <!--<q-btn color="primary" @click="$refs.stepper.goToStep('campaign')">Restart</q-btn>-->
-                  <q-btn color="primary" flat @click="$refs.stepper.previous(); resetRage();">Назад</q-btn>
-                  <q-btn  class="full-width" loader color="primary" @click="simulateProgress" :disable="!progress">Начать поиск</q-btn>
-                </q-stepper-navigation>
-              </q-step>
+          <q-btn color="primary" @click="$refs.stepper.next()">
+            {{ step === 'create_ad' ? 'Finalize' : 'Next' }}
+          </q-btn>
+        </q-stepper-navigation>
 
-              <q-stepper-navigation v-if="globalNavigation">
-                <q-btn
-                  v-if="step !== 'campaign'"
-                  color="primary"
-                  flat
-                  @click="$refs.stepper.previous()"
-                >
-                  Back
-                </q-btn>
-
-                <q-btn color="primary" @click="$refs.stepper.next()">
-                  {{ step === 'create_ad' ? 'Finalize' : 'Next' }}
-                </q-btn>
-              </q-stepper-navigation>
-
-              <q-inner-loading />
-            </q-stepper>
+        <q-inner-loading />
+      </q-stepper>
 
       <news-list></news-list>
 
-      <q-btn color="primary" round v-on:click="WpTotal()"  v-if="pagination" >ещё</q-btn>
+      <q-btn color="primary" round v-on:click="WpTotal()" v-if="pagination">ещё</q-btn>
 
     </div>
 
-      <q-fixed-position corner="bottom-right" :offset="[18, 18]">
-        <q-btn
-          color="primary"
-          round
-          v-back-to-top.animate="{offset: 50, duration: 200}"
-          class="animate-pop"
-        >
-          <q-icon name="keyboard_arrow_up" />
-        </q-btn>
-      </q-fixed-position>
-
+    <q-fixed-position corner="bottom-right" :offset="[18, 18]">
+      <q-btn color="primary" round v-back-to-top.animate="{offset: 50, duration: 200}" class="animate-pop">
+        <q-icon name="keyboard_arrow_up" />
+      </q-btn>
+    </q-fixed-position>
 
   </q-layout>
-
 </template>
 
 <script>
@@ -341,11 +306,13 @@ export default {
 }
 
 .imgcat {
-    -o-object-fit: cover;
-    position: relative;
-    padding: 5px;
-    margin: 3px;
-    box-shadow: 0px 1px 2px 1px #00000036;
+  position: relative;
+}
+
+.imgcat .imgcat_wrap {
+  padding: 5px;
+  margin: 3px;
+  box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.21176470588235294);
 }
 
 .imgcat img {
@@ -358,31 +325,33 @@ export default {
   font-size: 1rem;
   letter-spacing: 0;
   margin: 0;
-  line-height: 24px;
+  line-height: 35px;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   position: absolute;
-  bottom: 0px;
-  width: calc(100% - 10px);
-  background: white;
+  bottom: 4px;
+  width: calc(100% - 16px);
+  color: azure;
+  background: rgba(0, 0, 0, 0.34);
 }
 
 .imgcat input[type="radio"] {
-    display:none;
+  display: none;
 }
 
 .imgcat input[type="radio"] {
-    color:#f2f2f2;
-    font-family:Arial, sans-serif;
+  color: #f2f2f2;
+  font-family: Arial, sans-serif;
 }
 
-.imgcat input[type="radio"]:checked + span {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0px;
-    background-color: #0f8ee47a;
-    z-index: 4;
+.imgcat input[type="radio"]:checked+span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0px;
+  /* background-color: rgba(15, 142, 228, 0.53); */
+  background: linear-gradient(to bottom, rgba(255, 0, 82, 0.45), rgba(0, 161, 255, 0.45));
+  z-index: 4;
 }
 </style>
