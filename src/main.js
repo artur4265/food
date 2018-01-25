@@ -17,11 +17,13 @@ import { store } from './store/store'
 import VueResource from 'vue-resource'
 import SocialSharing from 'vue-social-sharing'
 import 'quasar-extras/fontawesome'
+import VueProgressiveImage from 'vue-progressive-image'
 
 Vue.config.productionTip = false
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(VueResource)
 Vue.use(SocialSharing)
+Vue.use(VueProgressiveImage)
 
 if (__THEME === 'mat') {
   require('quasar-extras/roboto-font')

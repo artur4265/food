@@ -25,7 +25,10 @@
           <div class="catlist col" v-if="img_mode !== false">
             <label class="col-6 imgcat" v-for="(cat, index) in catdata" v-bind:key="index" v-bind:for="cat.id">
               <div class="imgcat_wrap">
-                <img v-bind:src="cat.acf.cat_foto" alt="">
+                <!-- <img v-bind:src="cat.acf.cat_foto" alt=""> -->
+                <progressive-img v-bind:src="cat.acf.cat_foto" :blur="30" 
+                fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
+                no-ratio/>
                 <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr" />
                 <span></span>
                 <p>{{cat.name}}</p>
@@ -315,6 +318,9 @@ export default {
   box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.21176470588235294);
 }
 
+.imgcat .progressive-image-main {
+  position: initial;
+}
 .imgcat img {
   width: 100%;
   height: 100px;

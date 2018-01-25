@@ -9,7 +9,10 @@
 
       <q-card inline v-for="recipe in recipes" v-bind:key="recipe.id">
         <q-card-media v-if="recipe.acf.link_to_another_source !== false">
-          <img v-bind:src="recipe.acf.link_to_another_source">
+          <!-- <img v-bind:src="recipe.acf.link_to_another_source"> -->
+          <progressive-img v-bind:src="recipe.acf.link_to_another_source" :blur="30" 
+            fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
+            no-ratio/>
         </q-card-media>
         <q-card-media v-else>
           <img src="../assets/nia.jpg">
@@ -368,4 +371,7 @@ export default {
   background-color: rgba(107, 107, 107, 0.5294117647058824);
 }
 
+.q-card-media  .progressive-image .progressive-image-main {
+  position: initial;
+}
 </style>
