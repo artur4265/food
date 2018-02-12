@@ -10,7 +10,8 @@
       <q-card inline v-for="recipe in recipes" v-bind:key="recipe.id">
         <q-card-media v-if="recipe.acf.link_to_another_source !== false">
           <!-- <img v-bind:src="recipe.acf.link_to_another_source"> -->
-          <progressive-img v-bind:src="recipe.acf.link_to_another_source" :blur="30" 
+          <progressive-img v-bind:src="recipe.acf.link_to_another_source" :blur="30"
+            v-bind:placeholder="recipe.acf.link_to_another_source"
             fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
             no-ratio/>
         </q-card-media>
@@ -58,7 +59,11 @@
           </q-card-actions>
 
           <q-card-media v-if="detaliImg !== false">
-            <img class="detali_img" v-bind:src="detaliImg">
+            <!-- <img class="detali_img" v-bind:src="detaliImg"> -->
+            <progressive-img v-bind:src="detaliImg" :blur="0"
+              v-bind:placeholder="detaliImg"
+              fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
+              no-ratio/>
           </q-card-media>
           <q-card-media v-else>
             <img src="../assets/nia.jpg">
