@@ -53,7 +53,7 @@ export default {
     },
 
     getCategorieslistTest () {
-      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+      this.$http.get('https://look-cook.info/wp-json/wp/v2/categories/').then(response => {
         this.catdata = response.data
       })
     }

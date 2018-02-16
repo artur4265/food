@@ -20,7 +20,7 @@ export default {
 
   methods: {
     getContact () {
-      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/pages/96').then(response => {
+      this.$http.get('https://look-cook.info/wp-json/wp/v2/pages/96').then(response => {
         this.form = response.data
       })
     }

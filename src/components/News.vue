@@ -225,7 +225,7 @@ export default {
     },
 
     getCategorieslistTest () {
-      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+      this.$http.get('https://look-cook.info/wp-json/wp/v2/categories/').then(response => {
         this.catdata = response.data
       })
     },
@@ -235,7 +235,7 @@ export default {
     },
 
     getCategorieslist () {
-      this.$http.get('http://mob.4bstudio.com.ua/wp-json/wp/v2/categories/').then(response => {
+      this.$http.get('https://look-cook.info/wp-json/wp/v2/categories/').then(response => {
         var catFiltered = response.data.map(function (catIdName) {
           return {
             label: catIdName.name,
@@ -250,7 +250,7 @@ export default {
 
     createRequest () {
       console.log(this.$store.state.requests)
-      var req = 'http://mob.4bstudio.com.ua/wp-json/wp/v2/posts/'
+      var req = 'https://look-cook.info/wp-json/wp/v2/posts/'
       var catPart = '?categories=' + this.selectCat
       var enteredProducts
       if (this.foodChips.length < 1) {

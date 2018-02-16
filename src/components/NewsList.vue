@@ -255,16 +255,28 @@ export default {
       }
 
       this.detaliRecipe = Object.values(filterRecipe.filter(checkId))
+      console.log(this.detaliRecipe[0])
+      // this.detaliId = this.detaliRecipe[0].id
+      // this.detaliTitle = this.detaliRecipe[0].title.rendered
+      // this.detaliText = this.detaliRecipe[0].content.rendered
+      // this.detaliSostav = this.detaliRecipe[0].acf.sostav
+      // this.detaliImg = this.detaliRecipe[0].metadata.link_to_another_source[0]
+      // this.detaliTimeCook = this.detaliRecipe[0].metadata.time_to_cook[0]
+      // this.detaliKall = this.detaliRecipe[0].metadata.kkal[0]
+      // this.detaliBelki = this.detaliRecipe[0].metadata.belki[0]
+      // this.detaliJiri = this.detaliRecipe[0].metadata.jiri[0]
+      // this.detaliUglevodi = this.detaliRecipe[0].metadata.uglevodi[0]
+      // this.foodChips = this.detaliRecipe[0].tag_names
       this.detaliId = this.detaliRecipe[0].id
       this.detaliTitle = this.detaliRecipe[0].title.rendered
       this.detaliText = this.detaliRecipe[0].content.rendered
-      this.detaliSostav = this.detaliRecipe[0].metadata.sostav[0]
-      this.detaliImg = this.detaliRecipe[0].metadata.link_to_another_source[0]
-      this.detaliTimeCook = this.detaliRecipe[0].metadata.time_to_cook[0]
-      this.detaliKall = this.detaliRecipe[0].metadata.kkal[0]
-      this.detaliBelki = this.detaliRecipe[0].metadata.belki[0]
-      this.detaliJiri = this.detaliRecipe[0].metadata.jiri[0]
-      this.detaliUglevodi = this.detaliRecipe[0].metadata.uglevodi[0]
+      this.detaliSostav = this.detaliRecipe[0].acf.sostav
+      this.detaliImg = this.detaliRecipe[0].acf.link_to_another_source
+      this.detaliTimeCook = this.detaliRecipe[0].acf.time_to_cook
+      this.detaliKall = this.detaliRecipe[0].acf.kkal
+      this.detaliBelki = this.detaliRecipe[0].acf.belki
+      this.detaliJiri = this.detaliRecipe[0].acf.jiri
+      this.detaliUglevodi = this.detaliRecipe[0].acf.uglevodi
       this.foodChips = this.detaliRecipe[0].tag_names
     },
 
