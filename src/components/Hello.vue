@@ -28,7 +28,7 @@
 
       <div class="home">
         <div class="logo">
-          <img src="../assets/logo.svg">
+          <img src="../assets/redgrad.png">
         </div>
         <h2 class="welcome">What to cook</h2>
         <p>Приложение помогающие найти нужный рецепт блюда под имеющиеся Ваши продукты.</p>
@@ -97,11 +97,13 @@ export default {
 
 .home-lay {
 background: #00d2ff;  /* fallback for old browsers */
-background: -webkit-linear-gradient(#45c1e3, #c782d8);
+/* background: -webkit-linear-gradient(#45c1e3, #c782d8);
 background: -moz-linear-gradient(#45c1e3, #c782d8);
 background: -o-linear-gradient(#45c1e3, #c782d8);
-background: linear-gradient(#45c1e3, #c782d8);
+background: linear-gradient(#45c1e3, #c782d8); */
 min-height: calc(100vh - 50px);
+background-image: url('../assets/900blackbot.jpg');
+background-size: cover;
 }
 
 .home {
@@ -109,7 +111,7 @@ min-height: calc(100vh - 50px);
   flex-direction: column;
   text-align: center;
   background-color: white;
-  border-radius: 10px;
+  border-radius: 3px;
   max-height: 490px;
 }
 
