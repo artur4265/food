@@ -95,13 +95,16 @@
                   <span class="token">{{ detaliKall }} kkal</span>
                 </p>
                 <p>Белки -
-                  <span class="token">{{ detaliBelki }}</span>
+                  <span class="token">{{ detaliBelki }} гр</span>
+                  <q-progress :percentage="returnNum(detaliBelki)" />
                 </p>
                 <p>Жиры -
-                  <span class="token">{{ detaliJiri }}</span>
+                  <span class="token">{{ detaliJiri }} гр</span>
+                  <q-progress :percentage="returnNum(detaliJiri)" />
                 </p>
                 <p>Углеводы -
-                  <span class="token">{{ detaliUglevodi }}</span>
+                  <span class="token">{{ detaliUglevodi }} гр</span>
+                  <q-progress :percentage="returnNum(detaliUglevodi)" />
                 </p>
               </div>
             </q-collapsible>
@@ -162,7 +165,8 @@ import {
   QVideo,
   QModal,
   QModalLayout,
-  Toast
+  Toast,
+  QProgress
 } from 'quasar'
 
 export default {
@@ -188,7 +192,8 @@ export default {
     QVideo,
     QModal,
     QModalLayout,
-    Toast
+    Toast,
+    QProgress
   },
 
   data () {
@@ -313,6 +318,10 @@ export default {
           html: 'Добавленно в ' + text
         })
       }
+    },
+
+    returnNum (str) {
+      return Number(str)
     }
 
   },
@@ -390,5 +399,9 @@ export default {
 
 .q-card-media  .progressive-image .progressive-image-main {
   position: initial;
+}
+
+.q-progress {
+  margin-top: 7px;
 }
 </style>
