@@ -62,24 +62,26 @@
             <!-- <img class="detali_img" v-bind:src="detaliImg"> -->
             <progressive-img v-bind:src="detaliImg" :blur="0"
               v-bind:placeholder="detaliImg"
-              fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
+              fallback="https://scontent-frx5-1.xx.fbcdn.net/v/t1.0-1/p160x160/17342777_400396710325485_6251911563858201114_n.jpg?oh=66a03da29aedc57a0f8d61e44d513d7b&oe=5B47D02B"
               no-ratio/>
           </q-card-media>
           <q-card-media v-else>
-            <img src="../assets/nia.jpg">
+            <img src="/../assets/nia.jpg">
           </q-card-media>
 
           <q-card-title>
             {{ detaliTitle }}
             <span icon="shopping_cart" slot="subtitle">
-              <q-icon name="alarm" /> Время приготовления - {{ detaliTimeCook }}</span>
+              <q-icon name="ion-clock" /> - {{ detaliTimeCook }}
+              <q-icon name="ion-person-stalker" /> - {{ detaliCountPersons }}
+              </span>
           </q-card-title>
 
           <q-card-separator />
 
           <q-list>
             <q-collapsible group="somegroup" icon="receipt" label="Рецепт" opened>
-              <div>
+              <div class="--reletive_text_step">
                 <q-card-main v-html="detaliText"></q-card-main>
               </div>
             </q-collapsible>
@@ -88,7 +90,7 @@
                 <q-card-main class="quote" v-html="detaliSostav"></q-card-main>
               </div>
             </q-collapsible>
-            <q-collapsible group="somegroup" icon="donut_large" label="Энергетическая ценность">
+            <q-collapsible group="somegroup" icon="ion-fireball" label="Энергетическая ценность">
               <div>
                 <p class="quote">На 100гр блюда:</p>
                 <p>Калории -
@@ -201,6 +203,7 @@ export default {
       detaliImg: null,
       detaliRecipe: null,
       detaliTimeCook: null,
+      detaliCountPersons: null,
       detaliKall: null,
       detaliBelki: null,
       detaliJiri: null,
@@ -273,6 +276,7 @@ export default {
       this.detaliSostav = this.detaliRecipe[0].acf.sostav
       this.detaliImg = this.detaliRecipe[0].acf.link_to_another_source
       this.detaliTimeCook = this.detaliRecipe[0].acf.time_to_cook
+      this.detaliCountPersons = this.detaliRecipe[0].acf.count_persons
       this.detaliKall = this.detaliRecipe[0].acf.kkal
       this.detaliBelki = this.detaliRecipe[0].acf.belki
       this.detaliJiri = this.detaliRecipe[0].acf.jiri
@@ -347,6 +351,24 @@ export default {
 .popup_detali__card .right,
 .popup_detali__card .left {
   width: 50%;
+}
+
+.popup_detali__card .--reletive_text_step {
+    position: relative;
+    border-left: 4px solid #027be3;
+}
+
+.popup_detali__card .step-number {
+background: #027be3;
+    width: 26px;
+    height: 26px;
+    position: absolute;
+    border-radius: 17px;
+    line-height: 2.2;
+    text-align: center;
+    color: white;
+    left: -16px;
+    font-size: 12px;
 }
 
 .fl_right {

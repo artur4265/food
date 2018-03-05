@@ -27,7 +27,7 @@
               <div class="imgcat_wrap">
                 <!-- <img v-bind:src="cat.acf.cat_foto" alt=""> -->
                 <progressive-img v-bind:src="cat.acf.cat_foto" :blur="30" 
-                fallback="https://pp.userapi.com/c622226/v622226441/386c7/AH2NtK8sPN4.jpg"
+                fallback="https://scontent-frx5-1.xx.fbcdn.net/v/t1.0-1/p160x160/17342777_400396710325485_6251911563858201114_n.jpg?oh=66a03da29aedc57a0f8d61e44d513d7b&oe=5B47D02B"
                 no-ratio/>
                 <input type="radio" v-bind:id="cat.id" @change="getCatId(cat.id)" name="rr" />
                 <span></span>
@@ -257,7 +257,7 @@ export default {
         enteredProducts = ''
       }
       else {
-        enteredProducts = '&filter[s]=' + this.foodChips
+        enteredProducts = '&search=' + this.foodChips
       }
 
       this.$http.get(req + catPart + enteredProducts).then(res => {
